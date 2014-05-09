@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	 version="3.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+        http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    
+    <servlet>
+        <servlet-name>ctfile2x3d</servlet-name>
+        <servlet-class>
+            net.sf.ctfile2x3d.servlet.CTFile2X3DServlet
+        </servlet-class>
+        <init-param>
+            <param-name>url.pattern.mol</param-name>
+            <param-value>file:/sw/chem/testData/mol</param-value>
+        </init-param>
+        <init-param>
+            <param-name>url.pattern.rxn</param-name>
+            <param-value>file:/sw/chem/testData/rxn/rhea_50-aam</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <url-pattern>/ctfile2x3d</url-pattern>
+        <servlet-name>ctfile2x3d</servlet-name>
+    </servlet-mapping>
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    
+</web-app>

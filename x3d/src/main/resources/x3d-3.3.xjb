@@ -1,0 +1,27 @@
+<jaxb:bindings 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+    jaxb:extensionBindingPrefixes="xjc"
+    version="2.1">
+    <jaxb:globalBindings
+        fixedAttributeAsConstantProperty="true"
+        typesafeEnumMaxMembers="1000">
+        <xjc:serializable />
+    </jaxb:globalBindings>
+    <jaxb:bindings schemaLocation="x3d-3.3.xsd">
+        <jaxb:schemaBindings>
+          <jaxb:package name="org.web3d.x3d"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+    <jaxb:bindings schemaLocation="x3d-3.3-Web3dExtensionsPrivate.xsd">
+        <jaxb:schemaBindings>
+          <jaxb:package name="org.web3d.x3d.ext.private"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+    <jaxb:bindings schemaLocation="x3d-3.3-Web3dExtensionsPublic.xsd">
+        <jaxb:schemaBindings>
+          <jaxb:package name="org.web3d.x3d.ext.public"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+</jaxb:bindings>
