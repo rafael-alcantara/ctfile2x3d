@@ -25,8 +25,6 @@ public class MolParser implements CTFileParser {
     
     private static final String ELEMENT = "element";
     private static final String AAM = "aam";
-    private static final String M_END = "M END";
-
 
     private final CTFile2X3DConfig conf;
     
@@ -96,9 +94,7 @@ public class MolParser implements CTFileParser {
             String bondLine = reader.readLine();
             aab.addBond(parseBondLine(bondLine));
         }
-        // ignore properties block:
-        String line = reader.readLine();
-        while (!line.startsWith(M_END)){}
+        // ignore properties block
         return aab;
     }
 

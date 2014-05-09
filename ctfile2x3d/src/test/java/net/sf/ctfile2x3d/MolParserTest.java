@@ -146,9 +146,12 @@ public class MolParserTest {
     @Test
     public void testParse() throws Exception {
         System.out.println("parse - only visual check!");
+        System.out.println("before getting MOL");
         InputStream is = getClass().getClassLoader()
                 .getResourceAsStream("ChEBI_28413.mol");
+        System.out.println("before getting X3d");
         X3D result = instance.parse(is);
+        System.out.println("before marshalling");
         marshallToSystemOut(result);
     }
 

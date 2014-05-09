@@ -33,6 +33,8 @@ import org.web3d.x3d.X3D;
  */
 public class RxnParser implements CTFileParser {
 
+    private static final String M_END = "M END";
+
     private final ObjectFactory x3dOf = new ObjectFactory();
     
     private CTFile2X3DConfig conf;
@@ -124,6 +126,9 @@ public class RxnParser implements CTFileParser {
         for (int i = 0; i < num; i++) {
             br.readLine(); // skip $MOL line
             AtomsAndBonds aab = molParser.parseMol(br);
+            // ignore the properties block:
+            String line = br.readLine();
+            while (!line.startsWith(M_END)){}
             if (participants == null){
                 participants = aab;
             } else {
