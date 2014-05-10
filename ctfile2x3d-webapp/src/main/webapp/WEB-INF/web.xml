@@ -13,11 +13,13 @@
         </servlet-class>
         <init-param>
             <param-name>url.pattern.mol</param-name>
-            <param-value>file:/sw/chem/testData/mol</param-value>
+            <param-value>file:/sw/chem/testData/mol/{0}.mol</param-value>
         </init-param>
         <init-param>
             <param-name>url.pattern.rxn</param-name>
-            <param-value>file:/sw/chem/testData/rxn/rhea_50-aam</param-value>
+            <param-value>
+                file:/sw/chem/testData/rxn/rhea_50-aam/{0}.rxn
+            </param-value>
         </init-param>
     </servlet>
 
