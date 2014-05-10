@@ -39,7 +39,7 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
     /**
      * Attribute : BondRadius
      */
-    private float bondRadius = 0.1f;
+    private float bondRadius = 0.075f;
     /**
      * Attribute : BondDistance
      */

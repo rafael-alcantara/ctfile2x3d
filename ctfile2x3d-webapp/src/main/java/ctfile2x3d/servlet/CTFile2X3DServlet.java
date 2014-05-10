@@ -101,6 +101,7 @@ public class CTFile2X3DServlet extends HttpServlet {
         String id = req.getParameter("id");
         String format = req.getParameter("format");
         CTFileParser parser = null;
+        resp.setContentType("model/x3d+xml");
         URL url = null;
         try {
             switch (Format.valueOf(format.toUpperCase())){
@@ -108,25 +109,24 @@ public class CTFile2X3DServlet extends HttpServlet {
                     parser = molParser;
                     url = new URL(
                             MessageFormat.format(conf.getMolUrlPattern(), id));
-                    resp.setContentType("chemical-/x-mdl-molfile");
                     break;
                 case RXN:
                     parser = rxnParser;
                     url = new URL(
                             MessageFormat.format(conf.getRxnUrlPattern(), id));
-                    resp.setContentType("chemical-/x-mdl-rxnfile");
                     break;
             }
             try (InputStream is = url.openStream()) {
                 X3D x3d = parser.parse(is);
                 Marshaller m = jc.createMarshaller();
                 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-                m.marshal(x3d, resp.getOutputStream());
+                m.marshal(x3d, resp.getWriter());
                 resp.flushBuffer();
             }
         } catch (JAXBException ex) {
             Logger.getLogger(CTFile2X3DServlet.class.getName())
                     .log(Level.SEVERE, "Unable to marshall X3D: " + id, ex);
+            req.setAttribute("error", ex.getMessage());
             throw new ServletException(ex);
         }
     }

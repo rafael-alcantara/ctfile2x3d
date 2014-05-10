@@ -9,7 +9,7 @@
     <servlet>
         <servlet-name>ctfile2x3d</servlet-name>
         <servlet-class>
-            net.sf.ctfile2x3d.servlet.CTFile2X3DServlet
+            ctfile2x3d.servlet.CTFile2X3DServlet
         </servlet-class>
         <init-param>
             <param-name>url.pattern.mol</param-name>
@@ -29,7 +29,21 @@
     </servlet-mapping>
     
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
     
+    <error-page>
+        <exception-type>java.io.FileNotFoundException</exception-type>
+        <location>/WEB-INF/errors/fnfe.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.IllegalArgumentException</exception-type>
+        <location>/WEB-INF/errors/iae.jsp</location>
+    </error-page>
+    <!--
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/WEB-INF/errors/error.jsp</location>
+    </error-page>
+    -->
 </web-app>

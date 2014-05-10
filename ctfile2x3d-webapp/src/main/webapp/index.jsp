@@ -1,3 +1,4 @@
+<%@page pageEncoding="UTF-8" %>
 <html>
     <head>
         <meta charset="utf-8">
@@ -9,20 +10,21 @@
         </style>
     </head>
     <body>
-        <form action="ctfile2x3d?id" target="x3d">
+        <form action="index.jsp" accept-charset="utf-8">
             <label for="id">Compound/reaction ID:</label>
-            <input type="text" id="id">
+            <input type="text" id="id" name="id">
             <br>
             <label for="fomrat">Format:</label>
-            <select id="format">
+            <select id="format" name="format">
                 <option value="mol">MOL</option>
                 <option value="rxn">RXN</option>
             </select>
             <br>
             <button type="submit">View as X3D</button>
         </form>
-        
-        <iframe id="x3d" src="about:blank">
-
+        <jsp:include page="ctfile2x3d" flush="true">
+            <jsp:param name="id" value="${param.id}"/>
+            <jsp:param name="format" value="${param.format}"/>
+        </jsp:include>
     </body>
 </html>
