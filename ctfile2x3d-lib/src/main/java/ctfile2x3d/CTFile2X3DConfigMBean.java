@@ -62,6 +62,18 @@ public interface CTFile2X3DConfigMBean {
     public void setBondRadius(float value);
 
     /**
+     * Get scale to apply to bond lengths.
+     * @return 
+     */
+    public float getBondScale();
+
+    /**
+     * Set scale to apply to bond lengths.
+     * @param value
+     */
+    public void setBondScale(float value);
+
+    /**
      * Get distance between cylinders representing double/triple bonds.
      * @return 
      */

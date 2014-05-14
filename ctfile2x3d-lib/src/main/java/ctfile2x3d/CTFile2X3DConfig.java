@@ -18,10 +18,11 @@ import java.util.logging.Logger;
  * @author rafa
  */
 public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
-    
+     
     public static final String ATOM_SYMBOL_SIZE = "atom.symbol.size";
     public static final String ATOM_TRANSPARENCY = "atom.transparency";
     public static final String BOND_RADIUS = "bond.radius";
+    public static final String BOND_SCALE = "bond.scale";
     public static final String BOND_DISTANCE = "bond.distance";
     public static final String BOND_COLOR = "bond.color";
     public static final String MOLECULE_SPACING = "molecule.spacing";
@@ -41,6 +42,10 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
      */
     private float bondRadius = 0.075f;
     /**
+     * Attribute : BondScale
+     */
+    private float bondScale = 1.0f;
+   /**
      * Attribute : BondDistance
      */
     private float bondDistance = 0.1f;
@@ -100,6 +105,7 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
      *  <li><code>atom.symbol.size</code></li>
      *  <li><code>atom.transparency</code></li>
      *  <li><code>bond.radius</code></li>
+     *  <li><code>bond.scale</code></li>
      *  <li><code>bond.distance</code></li>
      *  <li><code>bond.color</code></li>
      *  <li><code>molecule.spacing</code></li>
@@ -120,6 +126,9 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
         }
         if (props.containsKey(BOND_RADIUS)){
             setBondRadius(Float.parseFloat(props.getProperty(BOND_RADIUS)));
+        }
+        if (props.containsKey(BOND_SCALE)){
+            setBondScale(Float.parseFloat(props.getProperty(BOND_SCALE)));
         }
         if (props.containsKey(BOND_DISTANCE)){
             setBondDistance(Float.parseFloat(props.getProperty(BOND_DISTANCE)));
@@ -177,6 +186,16 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
     @Override
     public void setBondRadius(float value) {
         bondRadius = value;
+    }
+
+    @Override
+    public float getBondScale() {
+        return bondScale;
+    }
+
+    @Override
+    public void setBondScale(float value) {
+        bondScale = value;
     }
 
     @Override

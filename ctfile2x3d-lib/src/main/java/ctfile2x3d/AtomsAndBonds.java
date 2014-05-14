@@ -17,10 +17,11 @@
 
 package ctfile2x3d;
 
+import ctfile2x3d.geom.Point;
+import ctfile2x3d.geom.Vector;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import ctfile2x3d.geom.Vector;
 
 /**
  *
@@ -32,12 +33,14 @@ class AtomsAndBonds {
     
     private final Map<String, Bond> bonds = new LinkedHashMap<>();
     
-    private double minX = Double.MAX_VALUE,
-            maxX = Double.MIN_VALUE,
-            minY = Double.MAX_VALUE,
-            maxY = Double.MAX_VALUE,
-            minZ = Double.MAX_VALUE,
-            maxZ = Double.MAX_VALUE;
+    private String name;
+    
+    private double minX = Double.POSITIVE_INFINITY,
+            maxX = Double.NEGATIVE_INFINITY,
+            minY = Double.POSITIVE_INFINITY,
+            maxY = Double.NEGATIVE_INFINITY,
+            minZ = Double.POSITIVE_INFINITY,
+            maxZ = Double.NEGATIVE_INFINITY;
     
     protected void addAtom(Atom atom){
         if (atoms.get(atom.getAam()) != null){
@@ -88,6 +91,22 @@ class AtomsAndBonds {
 
     public double getMaxZ() {
         return maxZ;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Calculates the middle point of this object.
+     * @return the middle point of this object.
+     */
+    public Point getMiddle(){
+        return new Point((maxX + minX)/2, (maxY + minY)/2, (maxZ + minZ)/2);
     }
 
     /**

@@ -23,13 +23,10 @@ import ctfile2x3d.MolParser;
 import ctfile2x3d.RxnParser;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.management.JMException;
-import javax.management.ObjectName;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +44,6 @@ import org.web3d.x3d.X3D;
 public class CTFile2X3DServlet extends HttpServlet {
 
     private JAXBContext jc;
-    private CTFile2X3DConfig conf;
     private MolParser molParser;
     private RxnParser rxnParser;
     
@@ -59,28 +55,31 @@ public class CTFile2X3DServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        conf = new CTFile2X3DConfig();
-        conf.setMolUrlPattern(
-                getInitParameter(CTFile2X3DConfig.MOL_URL_PATTERN));
-        conf.setRxnUrlPattern(
-                getInitParameter(CTFile2X3DConfig.RXN_URL_PATTERN));
         try {
             jc = JAXBContext.newInstance("org.web3d.x3d");
         } catch (JAXBException ex) {
             Logger.getLogger(CTFile2X3DServlet.class.getName())
                     .log(Level.SEVERE, "Unable to get JAXB context", ex);
         }
-        try { // Register MBean in Platform MBeanServer
-            ManagementFactory.getPlatformMBeanServer().registerMBean(conf,
-                    new ObjectName("ctfile2x3d:type=CTFile2X3DConfig"));
-        } catch (JMException ex) {
-            Logger.getLogger(CTFile2X3DServlet.class.getName()).log(
-                    Level.SEVERE,
-                    "Unable to register MBean CTFile2X3D configuration",
-                    ex);
+    }
+
+    private CTFile2X3DConfig getConf() {
+        return (CTFile2X3DConfig) getServletContext()
+                .getAttribute(CTFile2X3DListener.getConfigMBeanName());
+    }
+    
+    private MolParser getMolParser(){
+        if (molParser == null){
+            molParser = new MolParser(getConf());
         }
-        molParser = new MolParser(conf);
-        rxnParser = new RxnParser(conf);
+        return molParser;
+    }
+    
+    private RxnParser getRxnParser(){
+        if (rxnParser == null){
+            rxnParser = new RxnParser(getConf());
+        }
+        return rxnParser;
     }
 
     /**
@@ -106,14 +105,14 @@ public class CTFile2X3DServlet extends HttpServlet {
         try {
             switch (Format.valueOf(format.toUpperCase())){
                 case MOL:
-                    parser = molParser;
-                    url = new URL(
-                            MessageFormat.format(conf.getMolUrlPattern(), id));
+                    parser = getMolParser();
+                    url = new URL(MessageFormat.format(
+                            getConf().getMolUrlPattern(), id));
                     break;
                 case RXN:
-                    parser = rxnParser;
-                    url = new URL(
-                            MessageFormat.format(conf.getRxnUrlPattern(), id));
+                    parser = getRxnParser();
+                    url = new URL(MessageFormat.format(
+                            getConf().getRxnUrlPattern(), id));
                     break;
             }
             try (InputStream is = url.openStream()) {

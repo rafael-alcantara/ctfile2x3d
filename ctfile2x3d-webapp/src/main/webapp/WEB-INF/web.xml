@@ -6,21 +6,25 @@
 	 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
         http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     
+    <context-param>
+        <description>The pattern of an URL to get MOL files from.</description>
+        <param-name>url.pattern.mol</param-name>
+        <param-value>file:/sw/chem/testData/mol/{0}.mol</param-value>
+    </context-param>
+    
+    <context-param>
+        <description>The pattern of an URL to get RXN files from.</description>
+        <param-name>url.pattern.rxn</param-name>
+        <param-value>
+            file:/sw/chem/testData/rxn/rhea_50-aam/{0}.rxn
+        </param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>ctfile2x3d</servlet-name>
         <servlet-class>
             ctfile2x3d.servlet.CTFile2X3DServlet
         </servlet-class>
-        <init-param>
-            <param-name>url.pattern.mol</param-name>
-            <param-value>file:/sw/chem/testData/mol/{0}.mol</param-value>
-        </init-param>
-        <init-param>
-            <param-name>url.pattern.rxn</param-name>
-            <param-value>
-                file:/sw/chem/testData/rxn/rhea_50-aam/{0}.rxn
-            </param-value>
-        </init-param>
     </servlet>
 
     <servlet-mapping>
@@ -40,10 +44,13 @@
         <exception-type>java.lang.IllegalArgumentException</exception-type>
         <location>/WEB-INF/errors/iae.jsp</location>
     </error-page>
-    <!--
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/WEB-INF/errors/error.jsp</location>
-    </error-page>
-    -->
+    
+    <listener>
+        <description>
+            The servlet listens for the application (un)deployment in order to
+            (un)register the configuration as MBean.
+        </description>
+        <listener-class>ctfile2x3d.servlet.CTFile2X3DListener</listener-class>
+    </listener>
+
 </web-app>

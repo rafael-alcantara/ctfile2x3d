@@ -40,7 +40,8 @@ public class MolParser implements CTFileParser {
         BufferedReader br = new BufferedReader(isr);
         AtomsAndBonds aab = parseMol(br);
         X3D x3d = x3dOf.createX3D().withScene(x3dOf.createScene()
-                .withMetadataBooleanOrMetadataDoubleOrMetadataFloat(toX3D(aab)));
+                .withMetadataBooleanOrMetadataDoubleOrMetadataFloat(toX3D(aab))
+        );
         return x3d;
     }
     
@@ -51,8 +52,9 @@ public class MolParser implements CTFileParser {
      * @throws IOException in case of problem reading the data.
      */
     AtomsAndBonds parseMol(BufferedReader reader) throws IOException{
-        parseHeader(reader); // TODO
+        String[] header = parseHeader(reader);
         AtomsAndBonds aab = parseCtab(reader);
+        aab.setName(header[0]);
         return aab;
     }
 
@@ -183,7 +185,7 @@ public class MolParser implements CTFileParser {
      * @return a list of X3D objects.
      */
     List<Serializable> toX3D(AtomsAndBonds aab){
-        List<Serializable> transforms = new ArrayList<>();
+        List<Serializable> ser = new ArrayList<>();
         // Table of existing DEFs:
         Map<String, Serializable> defs = new HashMap<>();
         
@@ -209,7 +211,7 @@ public class MolParser implements CTFileParser {
 //                                .withValue(aam.toString()))
                     .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         x3dAtom);
-            transforms.add(tr);
+            ser.add(tr);
         }
         for (Map.Entry<String, Bond> entry : aab.getBonds().entrySet()) {
             String label = entry.getKey();
@@ -226,7 +228,7 @@ public class MolParser implements CTFileParser {
                     toP.getZ() - fromP.getZ());
             double bondLength = bondVector.getMagnitude();
             // Default rendering of Cylinder in X3D is vertical:
-            Vector vertVector = new Vector(0, 1, 0);
+            Vector vertVector = new Vector(0, conf.getBondScale(), 0);
             final Serializable x3dBond;
             if (defs.containsKey(bond.getTypeLabel())){
                 x3dBond = x3dOf.createGroup()
@@ -236,6 +238,7 @@ public class MolParser implements CTFileParser {
                 defs.put(bond.getTypeLabel(), x3dBond);
             }
             Transform tr = x3dOf.createTransform()
+                    .withDEF(bond.getLabel())
                     .withTranslation(middle.toString())
                     .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                             x3dBond);
@@ -244,9 +247,14 @@ public class MolParser implements CTFileParser {
                 Vector rotVector = Vector.getNormal(vertVector, bondVector);
                 tr.setRotation(rotVector.toString() + " " + rotAngle);
             }
-            transforms.add(tr);
+            ser.add(tr);
         }
-        return transforms;
+        ser.add(x3dOf.createViewpoint()
+                .withPosition(
+                    aab.getMiddle().getX()+" "+aab.getMiddle().getY()+" 10")
+                .withDescription(aab.getName())
+        );
+        return ser;
     }
 
     /**
@@ -355,6 +363,6 @@ public class MolParser implements CTFileParser {
                     x3dOf.createMaterial().withDiffuseColor(conf.getBondColor())),
             x3dOf.createCylinder()
                     .withRadius(conf.getBondRadius())
-                    .withHeight((float) bondLength));
+                    .withHeight((float) (bondLength * conf.getBondScale())));
     }
 }
