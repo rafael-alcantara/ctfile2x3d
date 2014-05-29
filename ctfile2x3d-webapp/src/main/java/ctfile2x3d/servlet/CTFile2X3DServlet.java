@@ -115,6 +115,7 @@ public class CTFile2X3DServlet extends HttpServlet {
                             getConf().getRxnUrlPattern(), id));
                     break;
             }
+            req.setAttribute("ctfileURL", url);
             try (InputStream is = url.openStream()) {
                 X3D x3d = parser.parse(is);
                 Marshaller m = jc.createMarshaller();
@@ -122,6 +123,11 @@ public class CTFile2X3DServlet extends HttpServlet {
                 m.marshal(x3d, resp.getWriter());
                 resp.flushBuffer();
             }
+        } catch (IOException ex) {
+            Logger.getLogger(CTFile2X3DServlet.class.getName())
+                    .log(Level.SEVERE, "Unable to marshall X3D: " + id, ex);
+            req.setAttribute("error", ex.getMessage());
+            throw ex;
         } catch (JAXBException ex) {
             Logger.getLogger(CTFile2X3DServlet.class.getName())
                     .log(Level.SEVERE, "Unable to marshall X3D: " + id, ex);
