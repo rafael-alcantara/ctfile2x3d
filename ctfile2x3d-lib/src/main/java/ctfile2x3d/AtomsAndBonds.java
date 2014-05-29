@@ -109,6 +109,10 @@ class AtomsAndBonds {
         return new Point((maxX + minX)/2, (maxY + minY)/2, (maxZ + minZ)/2);
     }
 
+    double getWidth() {
+        return maxX - minX;
+    }
+
     /**
      * Moves every atom and bond.
      * @param displacement the displacement to apply.
@@ -117,8 +121,15 @@ class AtomsAndBonds {
         for (Atom atom : atoms.values()) {
             atom.getCoordinates().move(displacement);
         }
-        // Bonds do not need to apply the displacement,
-        // as they only refer to atomss.
+        /* Bonds do not need to apply the displacement,
+           as they only refer to atom numbers. */
+        // Recalculate limits:
+        minX += displacement.getX();
+        maxX += displacement.getX();
+        minY += displacement.getY();
+        maxY += displacement.getY();
+        minZ += displacement.getZ();
+        maxZ += displacement.getZ();
     }
 
     /**
@@ -126,11 +137,11 @@ class AtomsAndBonds {
      * @param aab the other AtomsAndBonds object.
      */
     protected void addAll(AtomsAndBonds aab) {
-        for (Map.Entry<Integer, Atom> atom : aab.atoms.entrySet()) {
-            this.atoms.put(atom.getKey(), atom.getValue());
+        for (Atom atom : aab.atoms.values()) {
+            addAtom(atom);
         }
-        for (Map.Entry<String, Bond> bond : aab.bonds.entrySet()) {
-            this.bonds.put(bond.getKey(), bond.getValue());
+        for (Bond bond : aab.bonds.values()) {
+            addBond(bond);
         }
     }
 

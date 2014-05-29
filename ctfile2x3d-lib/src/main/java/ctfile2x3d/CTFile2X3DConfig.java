@@ -40,7 +40,7 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
     /**
      * Attribute : BondRadius
      */
-    private float bondRadius = 0.075f;
+    private float bondRadius = 0.05f;
     /**
      * Attribute : BondScale
      */
@@ -56,7 +56,7 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
     /**
      * Attribute : MoleculeSpacing
      */
-    private float moleculeSpacing;
+    private float moleculeSpacing = 2.0f;
     /**
      * Attribute : MolUrlPattern
      */

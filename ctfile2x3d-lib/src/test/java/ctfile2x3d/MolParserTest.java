@@ -86,12 +86,12 @@ public class MolParserTest {
         
         bondLine = "  1 14  1  0  0  0  0";
         expResult = new Bond(1, 14, 1);
-        result = instance.parseBondLine(bondLine);
+        result = instance.parseBondLine(bondLine, null);
         assertEquals(expResult, result);
 
         bondLine = "  1  2  2  0  0  0  0";
         expResult = new Bond(1, 2, 2);
-        result = instance.parseBondLine(bondLine);
+        result = instance.parseBondLine(bondLine, null);
         assertEquals(expResult, result);
     }
 
@@ -136,7 +136,7 @@ public class MolParserTest {
         aab.addAtom(new Atom(0.0, 1.0, 0.0, "C", 0));
         aab.addAtom(new Atom(1.0, 0.0, 0.0, "C", 0));
         aab.addAtom(new Atom(1.0, 1.0, 0.0, "C", 0));
-        List<Serializable> result = instance.toX3D(aab);
+        List<Serializable> result = instance.toX3D(aab).getNodes();
         for (Serializable ser : result) {
             marshallToSystemOut(ser);
         }

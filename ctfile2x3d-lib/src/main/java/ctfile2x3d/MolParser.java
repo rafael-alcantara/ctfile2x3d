@@ -23,8 +23,7 @@ import org.web3d.x3d.X3D;
  */
 public class MolParser implements CTFileParser {
     
-    private static final String ELEMENT = "element";
-    private static final String AAM = "aam";
+    static final String AAM = "AAM";
 
     private final CTFile2X3DConfig conf;
     
@@ -40,7 +39,8 @@ public class MolParser implements CTFileParser {
         BufferedReader br = new BufferedReader(isr);
         AtomsAndBonds aab = parseMol(br);
         X3D x3d = x3dOf.createX3D().withScene(x3dOf.createScene()
-                .withMetadataBooleanOrMetadataDoubleOrMetadataFloat(toX3D(aab))
+                .withMetadataBooleanOrMetadataDoubleOrMetadataFloat(
+                        toX3D(aab).getNodes())
         );
         return x3d;
     }
@@ -48,13 +48,16 @@ public class MolParser implements CTFileParser {
     /**
      * Parses a whole MOL file (header and ctab). 
      * @param reader A reader ready at the start of the MOL file.
-     * @return an object with atoms and bonds.
+     * @return an object with atoms and bonds, centered in the origin.
      * @throws IOException in case of problem reading the data.
      */
     AtomsAndBonds parseMol(BufferedReader reader) throws IOException{
         String[] header = parseHeader(reader);
         AtomsAndBonds aab = parseCtab(reader);
         aab.setName(header[0]);
+        // Move all atoms and bonds to the origin:
+        final Point m = aab.getMiddle();
+        aab.move(new Vector(-m.getX(), -m.getY(), -m.getZ()));
         return aab;
     }
 
@@ -88,13 +91,18 @@ public class MolParser implements CTFileParser {
         int[] counts = parseCountsLine(reader.readLine());
         int atomCount = counts[0];
         int bondsCount = counts[1];
+        boolean isAam = false; // is there any atom-atom mapping?
         for (int i = 0; i < atomCount; i++) {
             String atomLine = reader.readLine();
-            aab.addAtom(parseAtomLine(atomLine));
+            final Atom atom = parseAtomLine(atomLine);
+            if (atom.getAam() > 0) isAam = true;
+            aab.addAtom(atom);
         }
+        List<Atom> atoms = isAam? new ArrayList(aab.getAtoms().values()) : null;
         for (int i = 0; i < bondsCount; i++) {
             String bondLine = reader.readLine();
-            aab.addBond(parseBondLine(bondLine));
+            final Bond bond = parseBondLine(bondLine, atoms);
+            aab.addBond(bond);
         }
         // ignore properties block
         return aab;
@@ -165,9 +173,12 @@ public class MolParser implements CTFileParser {
     /**
      * Parses one bond line from the bond block in a MOL.
      * @param bondLine the bond line.
-     * @return 
+     * @param atoms the list of bound atoms. If not <code>null</code>, these
+     *      atoms contain the atom-atom mapping information required to build
+     *      the bond.
+     * @return a bond between two atoms.
      */
-    Bond parseBondLine(String bondLine){
+    Bond parseBondLine(String bondLine, List<Atom> atoms){
         int fromAtom = Integer.parseInt(bondLine.substring(0, 3).trim());
         int toAtom = Integer.parseInt(bondLine.substring(3, 6).trim());
         int type = Integer.parseInt(bondLine.substring(6, 9).trim());
@@ -175,78 +186,29 @@ public class MolParser implements CTFileParser {
         // 12-15: not used
         // 15-18: bond topology
         // 18-21: reacting center status
-        return new Bond(fromAtom, toAtom, type);
+        return new Bond(
+                atoms == null? fromAtom : atoms.get(fromAtom-1).getAam(),
+                atoms == null? toAtom : atoms.get(toAtom-1).getAam(), type);
     }
     
     /**
      * Renders atoms and bonds into a list of X3D objects that can be added to a
      * X3D Scene.
      * @param aab the object encapsulating atoms and bonds.
-     * @return a list of X3D objects.
+     * @return a list of X3D objects along with the map of DEFs used.
      */
-    List<Serializable> toX3D(AtomsAndBonds aab){
+    NodesAndDefs toX3D(AtomsAndBonds aab){
         List<Serializable> ser = new ArrayList<>();
         // Table of existing DEFs:
         Map<String, Serializable> defs = new HashMap<>();
         
         int atomNum = 0;
         for (Map.Entry<Integer, Atom> entry : aab.getAtoms().entrySet()) {
-            Integer aam = entry.getKey();
-            Atom atom = entry.getValue();
-            final Serializable x3dAtom;
-            if (defs.containsKey(atom.getSymbol())){
-                x3dAtom = x3dOf.createGroup()
-                        .withUSE(defs.get(atom.getSymbol()));
-            } else {
-                x3dAtom = getGroup(atom);
-                defs.put(atom.getSymbol(), x3dAtom);
-            }
-            String def = "" + (atom.getAam() > 0? atom.getAam() : ++atomNum);
-            Transform tr = x3dOf.createTransform()
-                    .withDEF(def)
-                    .withTranslation(atom.getCoordinates().toString())
-//                    .withMetadataString(
-//                        x3dOf.createMetadataString()
-//                                .withName(AAM)
-//                                .withValue(aam.toString()))
-                    .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        x3dAtom);
+            Transform tr = getAtomTransform(entry.getValue(), defs, ++atomNum);
             ser.add(tr);
         }
         for (Map.Entry<String, Bond> entry : aab.getBonds().entrySet()) {
-            String label = entry.getKey();
-            Bond bond = entry.getValue();
-            // one end of the bond:
-            Point fromP = aab.getAtoms().get(bond.getFromAtom())
-                    .getCoordinates();
-            // the other end of the bond:
-            Point toP = aab.getAtoms().get(bond.getToAtom()).getCoordinates();
-            // central point of the bond:
-            Point middle = Point.getMiddle(fromP, toP);
-            Vector bondVector = new Vector(toP.getX() - fromP.getX(),
-                    toP.getY() - fromP.getY(),
-                    toP.getZ() - fromP.getZ());
-            double bondLength = bondVector.getMagnitude();
-            // Default rendering of Cylinder in X3D is vertical:
-            Vector vertVector = new Vector(0, conf.getBondScale(), 0);
-            final Serializable x3dBond;
-            if (defs.containsKey(bond.getTypeLabel())){
-                x3dBond = x3dOf.createGroup()
-                        .withUSE(defs.get(bond.getTypeLabel()));
-            } else {
-                x3dBond = getGroup(bond, bondLength);
-                defs.put(bond.getTypeLabel(), x3dBond);
-            }
-            Transform tr = x3dOf.createTransform()
-                    .withDEF(bond.getLabel())
-                    .withTranslation(middle.toString())
-                    .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                            x3dBond);
-            double rotAngle = Vector.getAngle(vertVector, bondVector);
-            if (rotAngle > 0.01){ // FIXME
-                Vector rotVector = Vector.getNormal(vertVector, bondVector);
-                tr.setRotation(rotVector.toString() + " " + rotAngle);
-            }
+            Transform tr = getBondTransform(entry.getValue(), defs, aab);
             ser.add(tr);
         }
         ser.add(x3dOf.createViewpoint()
@@ -254,7 +216,88 @@ public class MolParser implements CTFileParser {
                     aab.getMiddle().getX()+" "+aab.getMiddle().getY()+" 10")
                 .withDescription(aab.getName())
         );
-        return ser;
+        // TODO: add SphereSensor?
+        NodesAndDefs nodesAndDefs = new NodesAndDefs(ser, defs);
+        return nodesAndDefs;
+    }
+
+    /**
+     * Builds a Transform around a bond.
+     * @param bond the bond to render.
+     * @param defs a table of DEFs already defined, mapping bond types to
+     *      their X3D representation. If the <code>bond</code> type is not
+     *      already there, it will be added.
+     * @param aab the object containing the atoms linked by this bond.
+     * @return a Transform representing a bond.
+     */
+    Transform getBondTransform(Bond bond, Map<String, Serializable> defs,
+            AtomsAndBonds aab) {
+        // one end of the bond:
+        Point fromP = aab.getAtoms().get(bond.getFromAtom())
+                .getCoordinates();
+        // the other end of the bond:
+        Point toP = aab.getAtoms().get(bond.getToAtom()).getCoordinates();
+        // central point of the bond:
+        Point middle = Point.getMiddle(fromP, toP);
+        Vector bondVector = new Vector(toP.getX() - fromP.getX(),
+                toP.getY() - fromP.getY(),
+                toP.getZ() - fromP.getZ());
+        double bondLength = bondVector.getMagnitude();
+        // Default rendering of Cylinder in X3D is vertical:
+        Vector vertVector = new Vector(0, conf.getBondScale(), 0);
+        final Serializable x3dBond;
+        if (defs.containsKey(bond.getTypeLabel())){
+            x3dBond = x3dOf.createGroup()
+                    .withUSE(defs.get(bond.getTypeLabel()));
+        } else {
+            x3dBond = getGroup(bond, bondLength);
+            defs.put(bond.getTypeLabel(), x3dBond);
+        }
+        Transform tr = x3dOf.createTransform()
+                .withDEF(bond.getLabel())
+                .withTranslation(middle.toString())
+                .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
+                        x3dBond);
+        double rotAngle = Vector.getAngle(vertVector, bondVector);
+        if (rotAngle > 0.01){ // FIXME
+            Vector rotVector = Vector.getNormal(vertVector, bondVector);
+            tr.setRotation(rotVector.toString() + " " + rotAngle);
+        }
+        return tr;
+    }
+
+    /**
+     * Builds a Transform around an atom group (ball + label).
+     * @param atom the atom to render.
+     * @param defs a table of DEFs already defined, mapping atom symbols to
+     *      their X3D representation. If the <code>atom</code> symbol is not
+     *      already there, it will be added.
+     * @param atomNum the atom number. Only used if the atom does not contain
+     *      information about its mapping.
+     * @return a Transform representing an atom.
+     */
+    private Transform getAtomTransform(Atom atom,
+            Map<String, Serializable> defs, int atomNum) {
+        final Serializable x3dAtom;
+        if (defs.containsKey(atom.getSymbol())){
+            x3dAtom = x3dOf.createGroup()
+                    .withUSE(defs.get(atom.getSymbol()));
+        } else {
+            x3dAtom = getGroup(atom);
+            defs.put(atom.getSymbol(), x3dAtom);
+        }
+        String def = AAM + (atom.getAam() > 0? atom.getAam() : atomNum);
+        Transform tr = x3dOf.createTransform()
+                .withDEF(def)
+                .withTranslation(atom.getCoordinates().toString())
+//                    .withMetadataString(
+//                        x3dOf.createMetadataString()
+//                                .withName(AAM)
+//                                .withValue(aam.toString()))
+                .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
+                        x3dAtom);
+        defs.put(def, tr);
+        return tr;
     }
 
     /**
@@ -274,33 +317,63 @@ public class MolParser implements CTFileParser {
 //                        .withName(ELEMENT)
 //                        .withValue(atom.getSymbol()))
                 ;
-        Shape ball = x3dOf.createShape().withRest(
-                x3dOf.createAppearance()
-                        .withAppearanceChildContentModel(
-                                x3dOf.createMaterial()
-                                        .withDiffuseColor(elem.getSphereColor())
-                                        .withTransparency(conf.getAtomTransparency())
-                        ),
-                x3dOf.createSphere().withRadius(elem.getSpacefillRadius()*0.5f) // FIXME
-        );
-        // TODO: Billboard
+        Transform ball = getAtomBall(elem);
+        Shape label = getAtomLabel(elem, atom);
+        group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
+                ball, label);
+        return group;
+    }
+
+    /**
+     * Builds an X3D text with the element symbol.
+     * @param elem The element to render as a label.
+     * @param atom 
+     * @return 
+     */
+    private Shape getAtomLabel(Element elem, Atom atom) {
+        // TODO: Billboard?
         Shape label = x3dOf.createShape().withRest(
                 x3dOf.createAppearance()
                         .withAppearanceChildContentModel(
                                 x3dOf.createMaterial()
+                                        .withClazz(CssClass.AtomLabelMaterial.name())
                                         .withDiffuseColor(elem.getLabelColor())
                         ),
                 x3dOf.createText()
                         .withString(atom.getSymbol())
                         .withFontStyle(x3dOf.createFontStyle()
+                                .withClazz(CssClass.AtomLabelFontStyle.name())
                                 .withFamily("SANS")
-                                .withJustify("MIDDLE")
+                                .withJustify("MIDDLE MIDDLE")
                                 .withSize(conf.getAtomSymbolSize())
                         )
         );
-        group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                ball, label);
-        return group;
+        return label;
+    }
+
+    /**
+     * Builds an X3D Sphere.
+     * @param elem The element to render as a sphere.
+     * @return a Transform containing a sphere.
+     */
+    private Transform getAtomBall(Element elem) {
+        Transform tr = x3dOf.createTransform()
+            .withClazz(CssClass.AtomSphere.name())
+            .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
+                x3dOf.createShape().withRest(
+                    x3dOf.createAppearance()
+                        .withAppearanceChildContentModel(
+                            x3dOf.createMaterial()
+                                    .withClazz(CssClass.AtomMaterial.name())
+                                    .withDiffuseColor(elem.getSphereColor())
+                                    .withTransparency(
+                                            conf.getAtomTransparency())
+                    ),
+                    x3dOf.createSphere()
+                            .withRadius(elem.getSpacefillRadius())
+                )
+            );
+        return tr;
     }
 
     /**
@@ -359,10 +432,38 @@ public class MolParser implements CTFileParser {
      */
     private Shape getBondCylinder(double bondLength){
         return x3dOf.createShape().withRest(
-            x3dOf.createAppearance().withAppearanceChildContentModel(
-                    x3dOf.createMaterial().withDiffuseColor(conf.getBondColor())),
+            x3dOf.createAppearance()
+                    .withAppearanceChildContentModel(
+                        x3dOf.createMaterial()
+                                .withClazz(CssClass.BondMaterial.name())
+                                .withDiffuseColor(conf.getBondColor())),
             x3dOf.createCylinder()
+                    .withClazz(CssClass.BondCylinder.name())
                     .withRadius(conf.getBondRadius())
                     .withHeight((float) (bondLength * conf.getBondScale())));
+    }
+    
+    /**
+     * Inner class to encapsulate both the X3D nodes to be added to a scene and
+     * the DEFs among them.
+     */
+    class NodesAndDefs {
+        
+        private final List<Serializable> nodes;
+        private final Map<String, Serializable> defs;
+
+        NodesAndDefs(List<Serializable> nodes, Map<String, Serializable> defs) {
+            this.nodes = nodes;
+            this.defs = defs;
+        }
+
+        List<Serializable> getNodes() {
+            return nodes;
+        }
+
+        Map<String, Serializable> getDefs() {
+            return defs;
+        }
+        
     }
 }

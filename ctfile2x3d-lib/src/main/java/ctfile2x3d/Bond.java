@@ -23,7 +23,7 @@ package ctfile2x3d;
  */
 class Bond {
     
-    private final int fromAtom, toAtom;
+    private int fromAtom, toAtom;
     private final int type;
 
     protected Bond(int fromAtom, int toAtom, int type) {
@@ -38,7 +38,7 @@ class Bond {
     protected int getFromAtom() {
         return fromAtom;
     }
-
+    
     protected int getToAtom() {
         return toAtom;
     }

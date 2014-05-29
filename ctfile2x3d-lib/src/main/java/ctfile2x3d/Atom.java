@@ -44,6 +44,10 @@ class Atom {
         return symbol;
     }
 
+    /**
+     * 
+     * @return the atom-atom mapping for this atom, or zero if not set.
+     */
     protected int getAam() {
         return aam;
     }
