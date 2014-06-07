@@ -136,7 +136,8 @@ public class MolParserTest {
         aab.addAtom(new Atom(0.0, 1.0, 0.0, "C", 0));
         aab.addAtom(new Atom(1.0, 0.0, 0.0, "C", 0));
         aab.addAtom(new Atom(1.0, 1.0, 0.0, "C", 0));
-        List<Serializable> result = instance.toX3D(aab).getNodes();
+        List<Serializable> result =
+                instance.toX3D(aab, Display.MIXED).getNodes();
         for (Serializable ser : result) {
             marshallToSystemOut(ser);
         }
@@ -150,7 +151,7 @@ public class MolParserTest {
         InputStream is = getClass().getClassLoader()
                 .getResourceAsStream("ChEBI_28413.mol");
         System.out.println("before getting X3d");
-        X3D result = instance.parse(is);
+        X3D result = instance.parse(is, Display.MIXED);
         System.out.println("before marshalling");
         marshallToSystemOut(result);
     }

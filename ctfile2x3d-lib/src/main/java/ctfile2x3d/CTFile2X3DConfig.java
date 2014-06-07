@@ -21,13 +21,13 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
      
     public static final String ATOM_SYMBOL_SIZE = "atom.symbol.size";
     public static final String ATOM_TRANSPARENCY = "atom.transparency";
-    public static final String BOND_RADIUS = "bond.radius";
-    public static final String BOND_SCALE = "bond.scale";
-    public static final String BOND_DISTANCE = "bond.distance";
+     public static final String BOND_DISTANCE = "bond.distance";
     public static final String BOND_COLOR = "bond.color";
     public static final String MOLECULE_SPACING = "molecule.spacing";
     public static final String MOL_URL_PATTERN = "url.pattern.mol";
     public static final String RXN_URL_PATTERN = "url.pattern.rxn";
+    public static final String RXN_ANIMATION_FRACTION = "rxn.animation.fraction";
+    public static final String RXN_CYCLE_INTERVAL = "rxn.ts.cycle.interval";
     
     /**
      * Attribute : AtomSymbolSize
@@ -37,14 +37,6 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
      * Attribute : AtomTransparency
      */
     private float atomTransparency = 0.3f;
-    /**
-     * Attribute : BondRadius
-     */
-    private float bondRadius = 0.05f;
-    /**
-     * Attribute : BondScale
-     */
-    private float bondScale = 1.0f;
    /**
      * Attribute : BondDistance
      */
@@ -65,6 +57,14 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
      * Attribute : RxnUrlPattern
      */
     private String rxnUrlPattern;
+    /**
+     * Attribute : AnimationFraction
+     */
+    private float rxnAnimationFraction = 0.75f;
+    /**
+     * Attribute : RxnCycleInterval
+     */
+    private float rxnCycleInterval = 5.0f;
     
     /**
      * Default constructor. It tries to load settings from a file
@@ -111,6 +111,8 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
      *  <li><code>molecule.spacing</code></li>
      *  <li><code>url.pattern.mol</code></li>
      *  <li><code>url.pattern.rxn</code></li>
+     *  <li><code>rxn.animation.fraction</code></li>
+     *  <li><code>rxn.ts.cycle.interval</code></li>
      * </ul>
      * See the corresponding getter/setter methods for details.
      * @param props the configuration properties.
@@ -123,12 +125,6 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
         if (props.containsKey(ATOM_TRANSPARENCY)){
             setAtomTransparency(
                     Float.parseFloat(props.getProperty(ATOM_TRANSPARENCY)));
-        }
-        if (props.containsKey(BOND_RADIUS)){
-            setBondRadius(Float.parseFloat(props.getProperty(BOND_RADIUS)));
-        }
-        if (props.containsKey(BOND_SCALE)){
-            setBondScale(Float.parseFloat(props.getProperty(BOND_SCALE)));
         }
         if (props.containsKey(BOND_DISTANCE)){
             setBondDistance(Float.parseFloat(props.getProperty(BOND_DISTANCE)));
@@ -145,6 +141,14 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
         }
         if (props.containsKey(RXN_URL_PATTERN)){
             setRxnUrlPattern(props.getProperty(RXN_URL_PATTERN));
+        }
+        if (props.containsKey(RXN_ANIMATION_FRACTION)){
+            setRxnAnimationFraction(Float.parseFloat(
+                    props.getProperty(RXN_ANIMATION_FRACTION)));
+        }
+        if (props.containsKey(RXN_CYCLE_INTERVAL)){
+            setRxnCycleInterval(Float.parseFloat(
+                    props.getProperty(RXN_CYCLE_INTERVAL)));
         }
     }
 
@@ -176,26 +180,6 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
     @Override
     public void setAtomTransparency(float value) {
         atomTransparency = value;
-    }
-
-    @Override
-    public float getBondRadius() {
-        return bondRadius;
-    }
-
-    @Override
-    public void setBondRadius(float value) {
-        bondRadius = value;
-    }
-
-    @Override
-    public float getBondScale() {
-        return bondScale;
-    }
-
-    @Override
-    public void setBondScale(float value) {
-        bondScale = value;
     }
 
     @Override
@@ -236,6 +220,26 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
     @Override
     public void setAtomSymbolSize(float value) {
         atomSymbolSize = value;
+    }
+
+    @Override
+    public float getRxnAnimationFraction(){
+        return rxnAnimationFraction;
+    }
+
+    @Override
+    public void setRxnAnimationFraction(float value) {
+        rxnAnimationFraction = value;
+    }
+
+    @Override
+    public float getRxnCycleInterval() {
+        return rxnCycleInterval;
+    }
+
+    @Override
+    public void setRxnCycleInterval(float value) {
+        rxnCycleInterval = value;
     }
     
 }

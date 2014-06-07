@@ -19,6 +19,7 @@ package ctfile2x3d.servlet;
 
 import ctfile2x3d.CTFile2X3DConfig;
 import ctfile2x3d.CTFileParser;
+import ctfile2x3d.Display;
 import ctfile2x3d.MolParser;
 import ctfile2x3d.RxnParser;
 import java.io.IOException;
@@ -99,6 +100,10 @@ public class CTFile2X3DServlet extends HttpServlet {
     throws ServletException, IOException {
         String id = req.getParameter("id");
         String format = req.getParameter("format");
+        Display display = Display.MIXED;
+        try {
+            display = Display.valueOf(req.getParameter("display"));
+        } catch (Exception e){}
         CTFileParser parser = null;
         resp.setContentType("model/x3d+xml");
         URL url = null;
@@ -117,7 +122,7 @@ public class CTFile2X3DServlet extends HttpServlet {
             }
             req.setAttribute("ctfileURL", url);
             try (InputStream is = url.openStream()) {
-                X3D x3d = parser.parse(is);
+                X3D x3d = parser.parse(is, display);
                 Marshaller m = jc.createMarshaller();
                 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
                 m.marshal(x3d, resp.getWriter());

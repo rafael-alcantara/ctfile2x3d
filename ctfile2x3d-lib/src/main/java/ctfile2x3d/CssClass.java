@@ -19,12 +19,14 @@ package ctfile2x3d;
 
 /**
  * CSS classes used by the parsers and applied to X3D objects.
+ * Their names are self-explanatory.
  * @author rafa
  */
 public enum CssClass {
     
-    BondMaterial, BondCylinder,
-    AtomMaterial, AtomLabelMaterial , AtomLabelFontStyle, AtomSphere,
+    BondMaterial, BondCylinder, BondCylinderTransform,
+    AtomSphereMaterial, AtomSphereTransform,
+    AtomLabelTransform, AtomLabelMaterial , AtomLabelFontStyle,
     AtomPI, TimeSensor
     
 }

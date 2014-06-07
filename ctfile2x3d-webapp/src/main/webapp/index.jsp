@@ -4,15 +4,17 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="x3dom-1.6.0/x3dom.css">
         <script src="x3dom-1.6.0/x3dom-full.js"></script>
+        <script src="ctfile2x3d.js"></script>
         <style>
             x3d { width: 100% !important; height: 400px !important; }
             label, input, select, option, button {
                 font-family: sans-serif;
                 font-size: large;
+                margin: 0.2ex 0.2em;
             }
             button {
                 font-weight: bold;
-                background-color: turquoise;
+                background-color: #006699;
                 border-radius: 10px;
             }
             label, button {
@@ -28,6 +30,14 @@
             <select id="format" name="format" >
                 <option value="mol">MOL</option>
                 <option value="rxn">RXN</option>
+            </select>
+            <label for="format">Display:</label>
+            <select id="display" name="display">
+                <option value="WIREFRAME">Wireframe</option>
+                <%-- option value="STICKS">Sticks</option --%>
+                <option value="BALLS_STICKS">Balls and sticks</option>
+                <option value="SPACEFILL">Spacefill</option>
+                <option value="MIXED">Mixed</option>
             </select>
             <button type="submit">View as X3D</button>
         </form>
@@ -47,5 +57,12 @@
             --%>
         </div>
         <a href="${ctfileURL}">${empty ctfileURL? '' : 'Download CTFile'}</a>
+        <select onchange="setDisplay(this.value)">
+            <option value="WIREFRAME">Wireframe</option>
+            <%-- option value="STICKS">Sticks</option --%>
+            <option value="BALLS_STICKS">Balls and sticks</option>
+            <option value="SPACEFILL">Spacefill</option>
+            <option value="MIXED">Mixed</option>
+        </select>
     </body>
 </html>

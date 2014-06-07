@@ -34,13 +34,13 @@ public class MolParser implements CTFileParser {
     }
     
     @Override
-    public X3D parse(InputStream is) throws IOException{
+    public X3D parse(InputStream is, Display display) throws IOException{
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader br = new BufferedReader(isr);
         AtomsAndBonds aab = parseMol(br);
         X3D x3d = x3dOf.createX3D().withScene(x3dOf.createScene()
                 .withMetadataBooleanOrMetadataDoubleOrMetadataFloat(
-                        toX3D(aab).getNodes())
+                        toX3D(aab, display).getNodes())
         );
         return x3d;
     }
@@ -195,20 +195,23 @@ public class MolParser implements CTFileParser {
      * Renders atoms and bonds into a list of X3D objects that can be added to a
      * X3D Scene.
      * @param aab the object encapsulating atoms and bonds.
+     * @param display the type of display for chemical structures.
      * @return a list of X3D objects along with the map of DEFs used.
      */
-    NodesAndDefs toX3D(AtomsAndBonds aab){
+    NodesAndDefs toX3D(AtomsAndBonds aab, Display display){
         List<Serializable> ser = new ArrayList<>();
         // Table of existing DEFs:
         Map<String, Serializable> defs = new HashMap<>();
         
         int atomNum = 0;
         for (Map.Entry<Integer, Atom> entry : aab.getAtoms().entrySet()) {
-            Transform tr = getAtomTransform(entry.getValue(), defs, ++atomNum);
+            Transform tr = getAtomTransform(entry.getValue(), defs, display,
+                    ++atomNum);
             ser.add(tr);
         }
         for (Map.Entry<String, Bond> entry : aab.getBonds().entrySet()) {
-            Transform tr = getBondTransform(entry.getValue(), defs, aab);
+            Transform tr = getBondTransform(entry.getValue(), defs, display,
+                    aab);
             ser.add(tr);
         }
         ser.add(x3dOf.createViewpoint()
@@ -227,11 +230,12 @@ public class MolParser implements CTFileParser {
      * @param defs a table of DEFs already defined, mapping bond types to
      *      their X3D representation. If the <code>bond</code> type is not
      *      already there, it will be added.
+     * @param display the type of display for chemical structures.
      * @param aab the object containing the atoms linked by this bond.
      * @return a Transform representing a bond.
      */
     Transform getBondTransform(Bond bond, Map<String, Serializable> defs,
-            AtomsAndBonds aab) {
+            Display display, AtomsAndBonds aab) {
         // one end of the bond:
         Point fromP = aab.getAtoms().get(bond.getFromAtom())
                 .getCoordinates();
@@ -244,13 +248,13 @@ public class MolParser implements CTFileParser {
                 toP.getZ() - fromP.getZ());
         double bondLength = bondVector.getMagnitude();
         // Default rendering of Cylinder in X3D is vertical:
-        Vector vertVector = new Vector(0, conf.getBondScale(), 0);
+        Vector vertVector = new Vector(0, 1, 0);
         final Serializable x3dBond;
         if (defs.containsKey(bond.getTypeLabel())){
             x3dBond = x3dOf.createGroup()
                     .withUSE(defs.get(bond.getTypeLabel()));
         } else {
-            x3dBond = getGroup(bond, bondLength);
+            x3dBond = getGroup(bond, bondLength, display);
             defs.put(bond.getTypeLabel(), x3dBond);
         }
         Transform tr = x3dOf.createTransform()
@@ -272,28 +276,25 @@ public class MolParser implements CTFileParser {
      * @param defs a table of DEFs already defined, mapping atom symbols to
      *      their X3D representation. If the <code>atom</code> symbol is not
      *      already there, it will be added.
+     * @param display the type of display for chemical structures.
      * @param atomNum the atom number. Only used if the atom does not contain
      *      information about its mapping.
      * @return a Transform representing an atom.
      */
     private Transform getAtomTransform(Atom atom,
-            Map<String, Serializable> defs, int atomNum) {
+            Map<String, Serializable> defs, Display display, int atomNum) {
         final Serializable x3dAtom;
         if (defs.containsKey(atom.getSymbol())){
             x3dAtom = x3dOf.createGroup()
                     .withUSE(defs.get(atom.getSymbol()));
         } else {
-            x3dAtom = getGroup(atom);
+            x3dAtom = getGroup(atom, display);
             defs.put(atom.getSymbol(), x3dAtom);
         }
         String def = AAM + (atom.getAam() > 0? atom.getAam() : atomNum);
         Transform tr = x3dOf.createTransform()
                 .withDEF(def)
                 .withTranslation(atom.getCoordinates().toString())
-//                    .withMetadataString(
-//                        x3dOf.createMetadataString()
-//                                .withName(AAM)
-//                                .withValue(aam.toString()))
                 .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         x3dAtom);
         defs.put(def, tr);
@@ -303,22 +304,19 @@ public class MolParser implements CTFileParser {
     /**
      * Generates the ball and label for one atom.
      * @param atom the atom to render.
+     * @param display the type of display for chemical structures.
      * @return the rendered Group of ball and label.
      */
-    private Group getGroup(Atom atom) {
+    private Group getGroup(Atom atom, Display display) {
         Element elem;
         try {
             elem = Element.valueOf(atom.getSymbol());
         } catch (Exception e){
             elem = Element.OTHER;
         }
-        Group group = x3dOf.createGroup().withDEF(atom.getSymbol())
-//                .withMetadataString(x3dOf.createMetadataString()
-//                        .withName(ELEMENT)
-//                        .withValue(atom.getSymbol()))
-                ;
-        Transform ball = getAtomBall(elem);
-        Shape label = getAtomLabel(elem, atom);
+        Group group = x3dOf.createGroup().withDEF(atom.getSymbol());
+        Transform ball = getAtomBall(elem, display);
+        Transform label = getAtomLabel(elem, atom, display);
         group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                 ball, label);
         return group;
@@ -328,49 +326,76 @@ public class MolParser implements CTFileParser {
      * Builds an X3D text with the element symbol.
      * @param elem The element to render as a label.
      * @param atom 
+     * @param display the type of display for chemical structures.
      * @return 
      */
-    private Shape getAtomLabel(Element elem, Atom atom) {
+    private Transform getAtomLabel(Element elem, Atom atom, Display display) {
+        float transparency = 1f;
+        switch (display){
+            case WIREFRAME:
+            case MIXED:
+                transparency = 0f;
+                break;
+        }
         // TODO: Billboard?
-        Shape label = x3dOf.createShape().withRest(
+        Transform tr = x3dOf.createTransform()
+            .withClazz(CssClass.AtomLabelTransform.name())
+            .withTranslation("0 -0.45 0") // FIXME
+            .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
+                x3dOf.createShape().withRest(
                 x3dOf.createAppearance()
-                        .withAppearanceChildContentModel(
-                                x3dOf.createMaterial()
-                                        .withClazz(CssClass.AtomLabelMaterial.name())
-                                        .withDiffuseColor(elem.getLabelColor())
-                        ),
+                    .withAppearanceChildContentModel(
+                        x3dOf.createMaterial()
+                                .withClazz(CssClass.AtomLabelMaterial.name())
+                                .withDiffuseColor(elem.getLabelColor())
+                                .withTransparency(transparency)
+                    ),
                 x3dOf.createText()
-                        .withString(atom.getSymbol())
-                        .withFontStyle(x3dOf.createFontStyle()
-                                .withClazz(CssClass.AtomLabelFontStyle.name())
-                                .withFamily("SANS")
-                                .withJustify("MIDDLE MIDDLE")
-                                .withSize(conf.getAtomSymbolSize())
-                        )
-        );
-        return label;
+                    .withString(atom.getSymbol())
+                    .withFontStyle(x3dOf.createFontStyle()
+                            .withClazz(CssClass.AtomLabelFontStyle.name())
+                            .withFamily("SANS")
+                            .withJustify("MIDDLE MIDDLE")
+                            .withSize(conf.getAtomSymbolSize())
+                    )
+        ));
+        return tr;
     }
 
     /**
      * Builds an X3D Sphere.
      * @param elem The element to render as a sphere.
+     * @param display the type of display for chemical structures.
      * @return a Transform containing a sphere.
      */
-    private Transform getAtomBall(Element elem) {
+    private Transform getAtomBall(Element elem, Display display) {
+        float scale = 1f, transparency = 0f;
+        switch (display){
+            case WIREFRAME:
+            case STICKS:
+                transparency = 1f;
+                break;
+            case BALLS_STICKS:
+                scale = 0.5f;
+            case SPACEFILL:
+            case MIXED:
+                transparency = conf.getAtomTransparency();
+                break;
+        }
         Transform tr = x3dOf.createTransform()
-            .withClazz(CssClass.AtomSphere.name())
+            .withClazz(CssClass.AtomSphereTransform.name())
+            .withScale(scale + " " + scale + " " + scale)
             .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                 x3dOf.createShape().withRest(
                     x3dOf.createAppearance()
                         .withAppearanceChildContentModel(
                             x3dOf.createMaterial()
-                                    .withClazz(CssClass.AtomMaterial.name())
+                                    .withClazz(CssClass.AtomSphereMaterial.name())
                                     .withDiffuseColor(elem.getSphereColor())
-                                    .withTransparency(
-                                            conf.getAtomTransparency())
+                                    .withTransparency(transparency)
                     ),
                     x3dOf.createSphere()
-                            .withRadius(elem.getSpacefillRadius())
+                            .withRadius(elem.getAtomRadiusEmpirical())
                 )
             );
         return tr;
@@ -380,31 +405,32 @@ public class MolParser implements CTFileParser {
      * Builds a Group with the Cylinders forming the bond.
      * @param bond the bond.
      * @param bondLength the length of the bond.
+     * @param display the type of display for chemical structures.
      * @return a Group with cylinders.
      */
-    private Group getGroup(Bond bond, double bondLength){
+    private Group getGroup(Bond bond, double bondLength, Display display){
         Group group = x3dOf.createGroup().withDEF(bond.getTypeLabel());
         switch (bond.getType()){
             case 1:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        getBondTransform("0 0 0", bondLength)
+                        getBondTransform("0 0 0", bondLength, display)
                 );
                 break;
             case 2:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         getBondTransform("-"+conf.getBondDistance()+" 0 0",
-                                bondLength),
+                                bondLength, display),
                         getBondTransform(conf.getBondDistance()+" 0 0",
-                                bondLength)
+                                bondLength, display)
                 );
                 break;
             case 3:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         getBondTransform("-"+conf.getBondDistance()+" 0 0",
-                                bondLength),
-                        getBondTransform("0 0 0", bondLength),
+                                bondLength, display),
+                        getBondTransform("0 0 0", bondLength, display),
                         getBondTransform(conf.getBondDistance()+" 0 0",
-                                bondLength)
+                                bondLength, display)
                 );
                 break;
         }
@@ -415,32 +441,56 @@ public class MolParser implements CTFileParser {
      * Builds the Transform for one Cylinder of a bond.
      * @param translation the position of the centre of the bond.
      * @param bondLength the length of the bond.
+     * @param display the type of display for chemical structures.
      * @return a Transform including the bond Cylinder.
      */
-    private Transform getBondTransform(String translation, double bondLength) {
+    private Transform getBondTransform(String translation, double bondLength,
+            Display display) {
+        float scale = 1f;
+        switch (display){
+            case WIREFRAME:
+            case MIXED:
+                scale = 0.5f;
+                break;
+        }
         return x3dOf.createTransform()
+                .withClazz(CssClass.BondCylinderTransform.name())
                 .withTranslation(translation)
+                .withScale(scale + " " + scale + " " + scale)
                 .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        getBondCylinder(bondLength)
+                        getBondCylinder(bondLength, display)
                 );
     }
 
     /**
      * Builds just one Cylinder to render a bond.
      * @param bondLength the length of the bond.
+     * @param display the type of display for chemical structures.
      * @return a Shape with a Cylinder for the bond.
      */
-    private Shape getBondCylinder(double bondLength){
+    private Shape getBondCylinder(double bondLength, Display display){
+        float transparency = 0.5f;
+        float radius = 0.05f;
+        switch (display){
+            case WIREFRAME:
+                transparency = 0f;
+                radius = 0.02f;
+                break;
+            case SPACEFILL:
+                transparency = 1f;
+                break;
+        }
         return x3dOf.createShape().withRest(
             x3dOf.createAppearance()
                     .withAppearanceChildContentModel(
                         x3dOf.createMaterial()
                                 .withClazz(CssClass.BondMaterial.name())
-                                .withDiffuseColor(conf.getBondColor())),
+                                .withDiffuseColor(conf.getBondColor())
+                                .withTransparency(transparency)),
             x3dOf.createCylinder()
                     .withClazz(CssClass.BondCylinder.name())
-                    .withRadius(conf.getBondRadius())
-                    .withHeight((float) (bondLength * conf.getBondScale())));
+                    .withRadius(radius)
+                    .withHeight((float) (bondLength)));
     }
     
     /**

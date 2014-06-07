@@ -18,7 +18,7 @@
 package ctfile2x3d.geom;
 
 /**
- *
+ * A simple implementation of a point in 3D space.
  * @author rafa
  */
 public class Point {
@@ -100,6 +100,5 @@ public class Point {
         y += displacement.getY();
         z += displacement.getZ();
     }
-    
     
 }

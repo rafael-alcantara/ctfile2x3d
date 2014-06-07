@@ -50,30 +50,6 @@ public interface CTFile2X3DConfigMBean {
     public void setAtomTransparency(float value);
 
     /**
-     * Get radius of cylinders representing bonds.
-     * @return 
-     */
-    public float getBondRadius();
-
-    /**
-     * Set radius of cylinders representing bonds.
-     * @param value
-     */
-    public void setBondRadius(float value);
-
-    /**
-     * Get scale to apply to bond lengths.
-     * @return 
-     */
-    public float getBondScale();
-
-    /**
-     * Set scale to apply to bond lengths.
-     * @param value
-     */
-    public void setBondScale(float value);
-
-    /**
      * Get distance between cylinders representing double/triple bonds.
      * @return 
      */
@@ -122,5 +98,37 @@ public interface CTFile2X3DConfigMBean {
      * @param value
      */
     public void setMoleculeSpacing(float value);
+
+    /**
+     * Gets the fraction of the time loop taken by the animation from
+     * reactants to products in RXN files.
+     * This fraction (a value from 0 to 1) is used to animate atoms and bonds
+     * from reactants to products, the rest being equally distributed between
+     * static reactants at the beginning and static products at the end of the
+     * loop.
+     * @return the fraction of the time loop taken by the animation from
+     *      reactants to products in RXN files.
+     */
+    public float getRxnAnimationFraction();
+
+    /**
+     * Sets the fraction of the time loop taken by the animation from
+     * reactants to products in RXN files.
+     * @param value a fraction between 0 and 1.
+     */
+    public void setRxnAnimationFraction(float value);
+
+    /**
+     * Gets the time in seconds for the time loop in RXN animations.
+     * @return the duration of the loop in seconds.
+     */
+    public float getRxnCycleInterval();
     
+    /**
+     * Sets the time in seconds for the time loop in RXN animations.
+     * @param value the duration of the loop in seconds.
+     */
+    public void setRxnCycleInterval(float value);
+
+
 }

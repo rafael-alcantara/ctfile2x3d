@@ -18,13 +18,17 @@
 package ctfile2x3d;
 
 /**
- *
+ * The type of display for chemical structures.
  * @author rafa
  */
 public enum Display {
     
+    WIREFRAME,
     STICKS,
     BALLS_STICKS,
-    SPACEFILL
-    
+    SPACEFILL,
+    /**
+     * WIREFRAME + SPACEFILL
+     */
+    MIXED
 }

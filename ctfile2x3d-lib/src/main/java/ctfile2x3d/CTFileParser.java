@@ -30,8 +30,9 @@ public interface CTFileParser {
     /**
      * Parses an input (CTFile) to generate X3D.
      * @param is an input stream for a CTFile.
+     * @param display the type of display for chemical structures.
      * @return an X3D object.
      * @throws java.io.IOException in case of problem reading the input.
      */
-    public X3D parse(InputStream is) throws IOException;
+    public X3D parse(InputStream is, Display display) throws IOException;
 }

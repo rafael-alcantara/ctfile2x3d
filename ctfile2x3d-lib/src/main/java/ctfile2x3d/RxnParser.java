@@ -42,6 +42,10 @@ import org.web3d.x3d.X3D;
 public class RxnParser implements CTFileParser {
 
     private static final String M_END = "M  END";
+    private static final String fraction_changed = "fraction_changed";
+    private static final String set_fraction = "set_fraction";
+    private static final String value_changed = "value_changed";
+    private static final String translation = "translation";
 
     private final Logger logger = Logger.getLogger(RxnParser.class.getName());
 
@@ -57,12 +61,12 @@ public class RxnParser implements CTFileParser {
     }
     
     @Override
-    public X3D parse(InputStream is) throws IOException{
+    public X3D parse(InputStream is, Display display) throws IOException{
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader br = new BufferedReader(isr);
         X3D x3d = x3dOf.createX3D().withScene(x3dOf.createScene()
                 .withMetadataBooleanOrMetadataDoubleOrMetadataFloat(
-                        toX3D(parseRxn(br))))
+                        toX3D(parseRxn(br), display)))
                 .withProfile(ProfileNames.FULL);
         return x3d;
     }
@@ -163,12 +167,13 @@ public class RxnParser implements CTFileParser {
      * X3D Scene.
      * @param aab the objects encapsulating atoms and bonds ([0] for reactants,
      *      [1] for products).
+     * @param display the type of display for chemical structures.
      * @return an X3D representation of the RXN file.
      */
-    List<Serializable> toX3D(AtomsAndBonds[] aab) {
+    List<Serializable> toX3D(AtomsAndBonds[] aab, Display display) {
         // Render reactants:
         logger.log(Level.FINE, "getting X3D for reactants");
-        NodesAndDefs nodesAndDefs = molParser.toX3D(aab[0]);
+        NodesAndDefs nodesAndDefs = molParser.toX3D(aab[0], display);
         logger.log(Level.FINE, "getting TS");
         final TimeSensor ts = x3dOf.createTimeSensor()
                 .withDEF(CssClass.TimeSensor.name())
@@ -192,20 +197,25 @@ public class RxnParser implements CTFileParser {
             );
             logger.log(Level.FINE, "distance p-r: {0}", v.getMagnitude());
             if (v.getMagnitude() > 0.01){ // FIXME
+                // Calculate the animation fractions:
+                float start = (1 - conf.getRxnAnimationFraction()) / 2;
+                float end = start + conf.getRxnAnimationFraction();
                 PositionInterpolator pi = new PositionInterpolator()
                         .withDEF(CssClass.AtomPI.name() + aam)
                         .withClazz(CssClass.AtomPI.name())
-                        .withKey("0 1")
-                        .withKeyValue(rAtom.getCoordinates().toString()
-                                + " " + pAtom.getCoordinates().toString());
+                        .withKey("0 " + start + " " + end + " 1")
+                        .withKeyValue(rAtom.getCoordinates().toString() + " "
+                                + rAtom.getCoordinates().toString() + " "
+                                + pAtom.getCoordinates().toString() + " "
+                                + pAtom.getCoordinates().toString());
                 ROUTE r1 = x3dOf.createROUTE()
-                        .withFromNode(ts).withFromField("fraction_changed") // FIXME
-                        .withToNode(pi).withToField("set_fraction"); // FIXME
+                        .withFromNode(ts).withFromField(fraction_changed)
+                        .withToNode(pi).withToField(set_fraction);
                 ROUTE r2 = x3dOf.createROUTE()
-                        .withFromNode(pi).withFromField("value_changed") // FIXME
+                        .withFromNode(pi).withFromField(value_changed)
                         .withToNode(nodesAndDefs.getDefs()
                                 .get(MolParser.AAM + aam.toString()))
-                        .withToField("translation"); // FIXME
+                        .withToField(translation);
                 logger.log(Level.FINE, "adding routes");
                 nodesAndDefs.getNodes().add(pi);
                 nodesAndDefs.getNodes().add(r1);

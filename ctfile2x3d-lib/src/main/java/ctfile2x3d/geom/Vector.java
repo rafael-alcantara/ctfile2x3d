@@ -18,7 +18,7 @@
 package ctfile2x3d.geom;
 
 /**
- *
+ * A simple implementation of a 3D vector.
  * @author rafa
  */
 public class Vector {
@@ -51,6 +51,10 @@ public class Vector {
         return z;
     }
 
+    /**
+     * Gets the length of the vector.
+     * @return 
+     */
     public double getMagnitude() {
         return magnitude;
     }
@@ -74,7 +78,8 @@ public class Vector {
      * @param v1
      * @param v2
      * @return The normal vector, whose direction follows the right hand rule.
-     * @see <a href="/en.wikipedia.org/wiki/Cross_product">Cross product</a>
+     * @see <a href="http://en.wikipedia.org/wiki/Cross_product">Cross
+     *      product</a>
      */
     public static Vector getNormal(Vector v1, Vector v2){
         return new Vector(
@@ -87,6 +92,12 @@ public class Vector {
         return v1.getX()*v2.getX() + v1.getY()*v2.getY() + v1.getZ()*v2.getZ();
     }
     
+    /**
+     * Calculates the angle formed by two vectors.
+     * @param v1
+     * @param v2
+     * @return the angle formed by v1 and v2.
+     */
     public static double getAngle(Vector v1, Vector v2){
         return Math.acos(Vector.getDotProduct(v1, v2)
                 / (v1.getMagnitude() * v2.getMagnitude()));
