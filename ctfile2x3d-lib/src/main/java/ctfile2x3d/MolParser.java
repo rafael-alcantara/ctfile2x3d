@@ -1,16 +1,18 @@
 package ctfile2x3d;
 
+import ctfile2x3d.geom.Point;
+import ctfile2x3d.geom.Vector;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ctfile2x3d.geom.Point;
-import ctfile2x3d.geom.Vector;
 import org.web3d.x3d.Group;
 import org.web3d.x3d.ObjectFactory;
 import org.web3d.x3d.Shape;
@@ -210,7 +212,7 @@ public class MolParser implements CTFileParser {
             ser.add(tr);
         }
         for (Map.Entry<String, Bond> entry : aab.getBonds().entrySet()) {
-            Transform tr = getBondTransform(entry.getValue(), defs, display,
+            Transform tr = getBondTransform(entry.getValue(), display,
                     aab);
             ser.add(tr);
         }
@@ -227,15 +229,11 @@ public class MolParser implements CTFileParser {
     /**
      * Builds a Transform around a bond.
      * @param bond the bond to render.
-     * @param defs a table of DEFs already defined, mapping bond types to
-     *      their X3D representation. If the <code>bond</code> type is not
-     *      already there, it will be added.
      * @param display the type of display for chemical structures.
      * @param aab the object containing the atoms linked by this bond.
      * @return a Transform representing a bond.
      */
-    Transform getBondTransform(Bond bond, Map<String, Serializable> defs,
-            Display display, AtomsAndBonds aab) {
+    Transform getBondTransform(Bond bond, Display display, AtomsAndBonds aab) {
         // one end of the bond:
         Point fromP = aab.getAtoms().get(bond.getFromAtom())
                 .getCoordinates();
@@ -249,14 +247,7 @@ public class MolParser implements CTFileParser {
         double bondLength = bondVector.getMagnitude();
         // Default rendering of Cylinder in X3D is vertical:
         Vector vertVector = new Vector(0, 1, 0);
-        final Serializable x3dBond;
-        if (defs.containsKey(bond.getTypeLabel())){
-            x3dBond = x3dOf.createGroup()
-                    .withUSE(defs.get(bond.getTypeLabel()));
-        } else {
-            x3dBond = getGroup(bond, bondLength, display);
-            defs.put(bond.getTypeLabel(), x3dBond);
-        }
+        final Serializable x3dBond = getGroup(bond, bondLength, display);
         Transform tr = x3dOf.createTransform()
                 .withDEF(bond.getLabel())
                 .withTranslation(middle.toString())
@@ -377,7 +368,7 @@ public class MolParser implements CTFileParser {
                 break;
             case BALLS_STICKS:
                 scale = 0.5f;
-            case SPACEFILL:
+                break;
             case MIXED:
                 transparency = conf.getAtomTransparency();
                 break;
@@ -409,28 +400,43 @@ public class MolParser implements CTFileParser {
      * @return a Group with cylinders.
      */
     private Group getGroup(Bond bond, double bondLength, Display display){
-        Group group = x3dOf.createGroup().withDEF(bond.getTypeLabel());
+        Group group = x3dOf.createGroup();
         switch (bond.getType()){
             case 1:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        getBondTransform("0 0 0", bondLength, display)
+                        getBondCylinderTransform("0 0 0", bondLength, display,
+                                null)
                 );
                 break;
             case 2:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        getBondTransform("-"+conf.getBondDistance()+" 0 0",
-                                bondLength, display),
-                        getBondTransform(conf.getBondDistance()+" 0 0",
-                                bondLength, display)
+                        getBondCylinderTransform(
+                                "-"+conf.getBondDistance()+" 0 0",
+                                bondLength, display, null),
+                        getBondCylinderTransform(
+                                conf.getBondDistance()+" 0 0",
+                                bondLength, display, null)
                 );
                 break;
             case 3:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        getBondTransform("-"+conf.getBondDistance()+" 0 0",
-                                bondLength, display),
-                        getBondTransform("0 0 0", bondLength, display),
-                        getBondTransform(conf.getBondDistance()+" 0 0",
-                                bondLength, display)
+                        getBondCylinderTransform(
+                                "-"+conf.getBondDistance()+" 0 0",
+                                bondLength, display, null),
+                        getBondCylinderTransform(
+                                "0 0 0", bondLength, display, null),
+                        getBondCylinderTransform(conf.getBondDistance()+" 0 0",
+                                bondLength, display, null)
+                );
+                break;
+            case 4: // aromatic
+                group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
+                        getBondCylinderTransform(
+                                "-"+conf.getBondDistance()+" 0 0",
+                                bondLength, display, null),
+                        getBondCylinderTransform(
+                                conf.getBondDistance()+" 0 0",
+                                bondLength, display, bond.getType())
                 );
                 break;
         }
@@ -442,10 +448,11 @@ public class MolParser implements CTFileParser {
      * @param translation the position of the centre of the bond.
      * @param bondLength the length of the bond.
      * @param display the type of display for chemical structures.
+     * @param bondType the bond type (<code>null)</code> means render default).
      * @return a Transform including the bond Cylinder.
      */
-    private Transform getBondTransform(String translation, double bondLength,
-            Display display) {
+    private Transform getBondCylinderTransform(String translation,
+            double bondLength, Display display, Integer bondType) {
         float scale = 1f;
         switch (display){
             case WIREFRAME:
@@ -458,7 +465,7 @@ public class MolParser implements CTFileParser {
                 .withTranslation(translation)
                 .withScale(scale + " " + scale + " " + scale)
                 .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        getBondCylinder(bondLength, display)
+                        getBondCylinder(bondLength, display, bondType)
                 );
     }
 
@@ -466,9 +473,11 @@ public class MolParser implements CTFileParser {
      * Builds just one Cylinder to render a bond.
      * @param bondLength the length of the bond.
      * @param display the type of display for chemical structures.
+     * @param bondType the bond type (<code>null)</code> means render default).
      * @return a Shape with a Cylinder for the bond.
      */
-    private Shape getBondCylinder(double bondLength, Display display){
+    private Shape getBondCylinder(double bondLength, Display display,
+            Integer bondType){
         float transparency = 0.5f;
         float radius = 0.05f;
         switch (display){
@@ -480,17 +489,32 @@ public class MolParser implements CTFileParser {
                 transparency = 1f;
                 break;
         }
+        if (bondType != null){
+            transparency += (1 - transparency) / 1.5; // FIXME?
+        }
+        Collection<Serializable> appNodes = new ArrayList<>();
+        appNodes.add(x3dOf.createMaterial()
+                .withClazz(CssClass.BondMaterial.name(), 
+                        CssClass.BondType.name() + bondType)
+                .withDiffuseColor(conf.getBondColor())
+                .withTransparency(transparency));
+        /* Not supporte by x3dom yet:
+        if (hatch != null){
+            appNodes.add(x3dOf.createFillProperties()
+                    .withClazz("fillProperties")
+                    .withFilled(true)
+                    .withHatched(true)
+                    .withHatchColor("1 1 1") // FIXME
+                    .withHatchStyle(BigInteger.valueOf(hatch)));
+        }
+        */
         return x3dOf.createShape().withRest(
-            x3dOf.createAppearance()
-                    .withAppearanceChildContentModel(
-                        x3dOf.createMaterial()
-                                .withClazz(CssClass.BondMaterial.name())
-                                .withDiffuseColor(conf.getBondColor())
-                                .withTransparency(transparency)),
+            x3dOf.createAppearance().withAppearanceChildContentModel(appNodes),
             x3dOf.createCylinder()
                     .withClazz(CssClass.BondCylinder.name())
                     .withRadius(radius)
-                    .withHeight((float) (bondLength)));
+                    .withHeight((float) (bondLength))
+        );
     }
     
     /**

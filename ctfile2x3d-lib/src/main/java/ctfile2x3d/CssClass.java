@@ -24,7 +24,7 @@ package ctfile2x3d;
  */
 public enum CssClass {
     
-    BondMaterial, BondCylinder, BondCylinderTransform,
+    BondMaterial, BondCylinder, BondCylinderTransform, BondType,
     AtomSphereMaterial, AtomSphereTransform,
     AtomLabelTransform, AtomLabelMaterial , AtomLabelFontStyle,
     AtomPI, TimeSensor

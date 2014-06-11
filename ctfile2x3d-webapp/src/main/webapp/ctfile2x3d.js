@@ -66,6 +66,7 @@ function showWireframe(){
     setTransparency('AtomSphereMaterial', true);
     setTransparency('AtomLabelMaterial', false);
     setTransparency('BondMaterial', false);
+    setTransparency('BondMaterial BondType4', 1/1.5);
     setBondRadius(0.02);
     setScale('BondCylinderTransform', 0.5);
 }
@@ -74,6 +75,7 @@ function showSticks(){
     setTransparency('AtomSphereMaterial', true);
     setTransparency('AtomLabelMaterial', true);
     setTransparency('BondMaterial', false);
+    setTransparency('BondMaterial BondType4', 1/1.5);
     setBondRadius(0.05);
     setScale('BondCylinderTransform', 1);
 }
@@ -83,6 +85,7 @@ function showBallsAndSticks(){
     setScale('AtomSphereTransform', 0.5);
     setTransparency('AtomLabelMaterial', true);
     setTransparency('BondMaterial', false);
+    setTransparency('BondMaterial BondType4', 1/1.5);
     setBondRadius(0.05);
     setScale('BondCylinderTransform', 1);
 }
@@ -99,6 +102,7 @@ function showMixed(){
     setScale('AtomSphereTransform', 1);
     setTransparency('AtomLabelMaterial', false);
     setTransparency('BondMaterial', false);
+    setTransparency('BondMaterial BondType4', 1/1.5);
     setBondRadius(0.05);
     setScale('BondCylinderTransform', 0.5);
 }
