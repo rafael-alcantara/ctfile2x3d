@@ -16,6 +16,6 @@
  */
 
 /**
- * Simple classes for 3D geometry, with simple implementations for common tasks.
+ * Classes to generate or manipulate the X3D domain.
  */
-package ctfile2x3d.geom;
+package ctfile2x3d.x3d;

@@ -16,6 +16,6 @@
  */
 
 /**
- * Simple classes for 3D geometry, with simple implementations for common tasks.
+ * Classes in the CTFiles domain.
  */
-package ctfile2x3d.geom;
+package ctfile2x3d.ctfile;
