@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ctfile2x3d;
+package ctfile2x3d.ctfile;
 
 import ctfile2x3d.geom.Point;
 import ctfile2x3d.geom.Vector;
@@ -27,7 +27,7 @@ import java.util.Objects;
  *
  * @author rafa
  */
-class AtomsAndBonds {
+public class AtomsAndBonds {
     
     private final Map<Integer, Atom> atoms = new LinkedHashMap<>();
     
@@ -42,7 +42,7 @@ class AtomsAndBonds {
             minZ = Double.POSITIVE_INFINITY,
             maxZ = Double.NEGATIVE_INFINITY;
     
-    protected void addAtom(Atom atom){
+    public void addAtom(Atom atom){
         if (atoms.get(atom.getAam()) != null){
             throw new IllegalArgumentException("Existing AAM");
         }
@@ -56,7 +56,7 @@ class AtomsAndBonds {
         maxZ = Math.max(maxZ, atom.getCoordinates().getZ());
     }
     
-    protected void addBond(Bond bond){
+    public void addBond(Bond bond){
         String label = bond.getFromAtom() + "-" + bond.getToAtom();
         bonds.put(label, bond);
     }
@@ -109,7 +109,7 @@ class AtomsAndBonds {
         return new Point((maxX + minX)/2, (maxY + minY)/2, (maxZ + minZ)/2);
     }
 
-    double getWidth() {
+    public double getWidth() {
         return maxX - minX;
     }
 
@@ -117,7 +117,7 @@ class AtomsAndBonds {
      * Moves every atom and bond.
      * @param displacement the displacement to apply.
      */
-    protected void move(Vector displacement) {
+    public void move(Vector displacement) {
         for (Atom atom : atoms.values()) {
             atom.getCoordinates().move(displacement);
         }
@@ -136,7 +136,7 @@ class AtomsAndBonds {
      * Adds every atom and bond from another object of this class.
      * @param aab the other AtomsAndBonds object.
      */
-    protected void addAll(AtomsAndBonds aab) {
+    public void addAll(AtomsAndBonds aab) {
         for (Atom atom : aab.atoms.values()) {
             addAtom(atom);
         }

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ctfile2x3d;
+package ctfile2x3d.ctfile;
 
 /**
  * Enumeration of chemical elements with their
@@ -24,7 +24,7 @@ package ctfile2x3d;
  * <a href="http://en.wikipedia.org/wiki/CPK_coloring">CPK</a> convention).
  * @author rafa
  */
-enum Element {
+public enum Element {
     
     C(0.70f, 0.67f, "0.2 0.2 0.2", "0 0 0"),
     H(0.25f, 0.53f, "0.6 0.6 0.6", "0 0 0"),
@@ -63,7 +63,7 @@ enum Element {
      * accuracy is about 5pm.
      * @return the atom radius in armstrongs.
      */
-    float getAtomRadiusEmpirical() {
+    public float getAtomRadiusEmpirical() {
         return atomRadiusEmpirical;
     }
 
@@ -72,7 +72,7 @@ enum Element {
      * models.
      * @return the atom radius in armstrongs.
      */
-    float getAtomRadiusCalculated() {
+    public float getAtomRadiusCalculated() {
         return atomRadiusCalculated;
     }
 
@@ -80,11 +80,11 @@ enum Element {
      * Gets the CPK color for the element.
      * @return a color in RGB space, one-based.
      */
-    String getSphereColor() {
+    public String getSphereColor() {
         return sphereColor;
     }
 
-    String getLabelColor() {
+    public String getLabelColor() {
         return labelColor;
     }
 

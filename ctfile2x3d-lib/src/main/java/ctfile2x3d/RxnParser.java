@@ -17,22 +17,17 @@
 
 package ctfile2x3d;
 
-import ctfile2x3d.MolParser.NodesAndDefs;
+import ctfile2x3d.ctfile.AtomsAndBonds;
 import ctfile2x3d.geom.Vector;
+import ctfile2x3d.x3d.X3DGenerator;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.web3d.x3d.ObjectFactory;
-import org.web3d.x3d.PositionInterpolator;
 import org.web3d.x3d.ProfileNames;
-import org.web3d.x3d.ROUTE;
-import org.web3d.x3d.ScalarInterpolator;
-import org.web3d.x3d.TimeSensor;
 import org.web3d.x3d.X3D;
 
 /**
@@ -42,21 +37,20 @@ import org.web3d.x3d.X3D;
 public class RxnParser implements CTFileParser {
 
     private static final String M_END = "M  END";
-    private static final String fraction_changed = "fraction_changed";
-    private static final String set_fraction = "set_fraction";
-    private static final String value_changed = "value_changed";
-    private static final String translation = "translation";
 
-    private final Logger logger = Logger.getLogger(RxnParser.class.getName());
+    private static final Logger logger =
+            Logger.getLogger(RxnParser.class.getName());
 
     private final ObjectFactory x3dOf = new ObjectFactory();
     
-    private CTFile2X3DConfig conf;
-    private MolParser molParser;
+    private final X3DGenerator x3dGen;
+    private final CTFile2X3DConfig conf;
+    private final MolParser molParser;
 
     public RxnParser(CTFile2X3DConfig conf) {
         this.conf = conf;
         this.molParser = new MolParser(conf);
+        this.x3dGen = new X3DGenerator(conf);
         logger.setLevel(Level.FINE); // FIXME
     }
     
@@ -66,7 +60,7 @@ public class RxnParser implements CTFileParser {
         BufferedReader br = new BufferedReader(isr);
         X3D x3d = x3dOf.createX3D().withScene(x3dOf.createScene()
                 .withMetadataBooleanOrMetadataDoubleOrMetadataFloat(
-                        toX3D(parseRxn(br), display)))
+                        x3dGen.toX3D(parseRxn(br), display)))
                 .withProfile(ProfileNames.FULL);
         return x3d;
     }
@@ -160,112 +154,6 @@ public class RxnParser implements CTFileParser {
             logger.log(Level.FINE, "Participant at {0}", aab.getMiddle());
         }
         return participants;
-    }
-
-    /**
-     * Converts AtomsAndBonds objects into X3D objects which can be added to an
-     * X3D Scene.
-     * @param aab the objects encapsulating atoms and bonds ([0] for reactants,
-     *      [1] for products).
-     * @param display the type of display for chemical structures.
-     * @return an X3D representation of the RXN file.
-     */
-    List<Serializable> toX3D(AtomsAndBonds[] aab, Display display) {
-        // Render reactants:
-        logger.log(Level.FINE, "getting X3D for reactants");
-        NodesAndDefs nodesAndDefs = molParser.toX3D(aab[0], display);
-        logger.log(Level.FINE, "getting TS");
-        final TimeSensor ts = x3dOf.createTimeSensor()
-                .withDEF(CssClass.TimeSensor.name())
-                .withClazz(CssClass.TimeSensor.name())
-                .withEnabled(true).withLoop(true).withCycleInterval("5"); // FIXME
-        logger.log(Level.FINE, "adding TS");
-        nodesAndDefs.getNodes().add(ts);
-        // Process the products and compute the proper animation:
-        // - translation for atoms:
-        logger.log(Level.FINE,
-                "starting loop for atom translation, length: {0}",
-                aab[0].getAtoms().size());
-        for (Integer aam : aab[0].getAtoms().keySet()){
-        logger.log(Level.FINE, "one atom: {0}", aam);
-            Atom rAtom = aab[0].getAtoms().get(aam);
-            Atom pAtom = aab[1].getAtoms().get(aam);
-            Vector v = new Vector(
-                    pAtom.getCoordinates().getX()-rAtom.getCoordinates().getX(),
-                    pAtom.getCoordinates().getY()-rAtom.getCoordinates().getY(),
-                    pAtom.getCoordinates().getZ()-rAtom.getCoordinates().getZ()
-            );
-            logger.log(Level.FINE, "distance p-r: {0}", v.getMagnitude());
-            if (v.getMagnitude() > 0.01){ // FIXME
-                // Calculate the animation fractions:
-                float start = (1 - conf.getRxnAnimationFraction()) / 2;
-                float end = start + conf.getRxnAnimationFraction();
-                PositionInterpolator pi = new PositionInterpolator()
-                        .withDEF(CssClass.AtomPI.name() + aam)
-                        .withClazz(CssClass.AtomPI.name())
-                        .withKey("0 " + start + " " + end + " 1")
-                        .withKeyValue(rAtom.getCoordinates().toString() + " "
-                                + rAtom.getCoordinates().toString() + " "
-                                + pAtom.getCoordinates().toString() + " "
-                                + pAtom.getCoordinates().toString());
-                ROUTE r1 = x3dOf.createROUTE()
-                        .withFromNode(ts).withFromField(fraction_changed)
-                        .withToNode(pi).withToField(set_fraction);
-                ROUTE r2 = x3dOf.createROUTE()
-                        .withFromNode(pi).withFromField(value_changed)
-                        .withToNode(nodesAndDefs.getDefs()
-                                .get(MolParser.AAM + aam.toString()))
-                        .withToField(translation);
-                logger.log(Level.FINE, "adding routes");
-                nodesAndDefs.getNodes().add(pi);
-                nodesAndDefs.getNodes().add(r1);
-                nodesAndDefs.getNodes().add(r2);
-            }
-        }
-        logger.log(Level.FINE, "loop finished");
-        /*
-        // - bonds:
-        ScalarInterpolator fadeOutInterp = null, fadeInInterp = null;
-        for (String bl : aab[0].getBonds().keySet()) {
-            Bond rBond = aab[0].getBonds().get(bl);
-            Bond pBond = aab[1].getBonds().get(bl);
-            if (pBond == null){
-                // - fade out for broken bonds
-                if (fadeOutInterp == null){
-                    fadeOutInterp = x3dOf.createScalarInterpolator()
-                            .withKeyValue("0 1, 0 1");
-                    ROUTE r1 = x3dOf.createROUTE()
-                            .withFromNode(ts)
-                            .withFromField("fractin_changed") // FIXME
-                            .withToNode(fadeOutInterp)
-                            .withToField("set_fracdtion"); // FIXME
-                    nodesAndDefs.getNodes().add(fadeOutInterp);
-                    nodesAndDefs.getNodes().add(r1);
-                }
-                ROUTE r2 = x3dOf.createROUTE()
-                        .withFromNode(fadeOutInterp)
-                        .withFromField("value_changed") // FIXME
-                        .withToNode(XXX)
-                        .withToField("set_transparency"); // FIXME
-                nodesAndDefs.getNodes().add(r2);
-            } else if (rBond.getType() == pBond.getType()){
-                // - translation for unchanged bonds
-                
-            } else {
-                // - fade out/fade in for changed bonds
-                
-            }
-            // - movement of the camera
-        }
-        // - fade in for formed bonds
-        for (String bl : aab[1].getBonds().keySet()) {
-            if (aab[0].getBonds().get(bl) == null){
-                nodesAndDefs.getNodes().add(molParser.getBondTransform(
-                        aab[1].getBonds().get(bl), aab[1], XXX));
-            }
-        }
-        */
-        return nodesAndDefs.getNodes();
     }
     
 }

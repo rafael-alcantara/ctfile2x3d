@@ -48,7 +48,7 @@
         <module>ctfile2x3d-lib</module>
         <module>ctfile2x3d-webapp</module>
     </modules>
-
+<!--
     <build>
         <plugins>
             <plugin>
@@ -67,5 +67,5 @@
             </plugin>
         </plugins>
     </build>
-
+-->
 </project>

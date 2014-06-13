@@ -17,12 +17,13 @@
 
 package ctfile2x3d;
 
+import ctfile2x3d.ctfile.Atom;
+import ctfile2x3d.ctfile.AtomsAndBonds;
+import ctfile2x3d.ctfile.Bond;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.io.StringReader;
-import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -129,22 +130,6 @@ public class MolParserTest {
 
     @Test
     @Ignore("only visual check")
-    public void testToX3D() throws JAXBException {
-        System.out.println("toX3D - only visual check!");
-        AtomsAndBonds aab = new AtomsAndBonds();
-        aab.addAtom(new Atom(0.0, 0.0, 0.0, "C", 0));
-        aab.addAtom(new Atom(0.0, 1.0, 0.0, "C", 0));
-        aab.addAtom(new Atom(1.0, 0.0, 0.0, "C", 0));
-        aab.addAtom(new Atom(1.0, 1.0, 0.0, "C", 0));
-        List<Serializable> result =
-                instance.toX3D(aab, Display.MIXED).getNodes();
-        for (Serializable ser : result) {
-            marshallToSystemOut(ser);
-        }
-    }
-
-    @Test
-    @Ignore("only visual check")
     public void testParse() throws Exception {
         System.out.println("parse - only visual check!");
         System.out.println("before getting MOL");
@@ -153,15 +138,7 @@ public class MolParserTest {
         System.out.println("before getting X3d");
         X3D result = instance.parse(is, Display.MIXED);
         System.out.println("before marshalling");
-        marshallToSystemOut(result);
-    }
-
-    private void marshallToSystemOut(Object jaxbObj)
-    throws JAXBException, PropertyException {
-        JAXBContext jc = JAXBContext.newInstance("org.web3d.x3d");
-        Marshaller m = jc.createMarshaller();
-        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        m.marshal(jaxbObj, System.out);
+        X3DMarshaller.marshallToSystemOut(result);
     }
     
 }

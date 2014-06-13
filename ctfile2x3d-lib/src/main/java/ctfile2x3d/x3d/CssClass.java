@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ctfile2x3d;
+package ctfile2x3d.x3d;
 
 /**
  * CSS classes used by the parsers and applied to X3D objects.

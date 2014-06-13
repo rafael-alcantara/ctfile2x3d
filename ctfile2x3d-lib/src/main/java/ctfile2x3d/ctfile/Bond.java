@@ -15,49 +15,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ctfile2x3d;
-
-import java.util.Objects;
-import ctfile2x3d.geom.Point;
+package ctfile2x3d.ctfile;
 
 /**
  *
  * @author rafa
  */
-class Atom {
+public class Bond {
     
-    private final Point coordinates;
-    private final String symbol;
-    private final int aam;
+    private int fromAtom, toAtom;
+    private final int type;
 
-    protected Atom(double x, double y, double z, String symbol, int aam) {
-        this.coordinates = new Point(x, y, z);
-        this.symbol = symbol;
-        this.aam = aam;
+    public Bond(int fromAtom, int toAtom, int type) {
+        if (fromAtom == toAtom){
+            throw new IllegalArgumentException("Bond to the same atom!");
+        }
+        this.fromAtom = fromAtom < toAtom? fromAtom : toAtom;
+        this.toAtom = fromAtom < toAtom? toAtom : fromAtom;
+        this.type = type;
     }
 
-    public Point getCoordinates() {
-        return coordinates;
+    public int getFromAtom() {
+        return fromAtom;
+    }
+    
+    public int getToAtom() {
+        return toAtom;
     }
 
-    protected String getSymbol() {
-        return symbol;
+    public int getType() {
+        return type;
     }
-
-    /**
-     * 
-     * @return the atom-atom mapping for this atom, or zero if not set.
-     */
-    protected int getAam() {
-        return aam;
+    
+    public String getTypeLabel(){
+        return "bondType" + type;
+    }
+    
+    public String getLabel(){
+        return fromAtom + "-" + toAtom;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 61 * hash + Objects.hashCode(this.coordinates);
-        hash = 61 * hash + Objects.hashCode(this.symbol);
-        hash = 61 * hash + this.aam;
+        int hash = 7;
         return hash;
     }
 
@@ -69,17 +69,17 @@ class Atom {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Atom other = (Atom) obj;
-        if (!Objects.equals(this.coordinates, other.coordinates)) {
+        final Bond other = (Bond) obj;
+        if (this.fromAtom != other.fromAtom) {
             return false;
         }
-        if (!Objects.equals(this.symbol, other.symbol)) {
+        if (this.toAtom != other.toAtom) {
             return false;
         }
-        if (this.aam != other.aam) {
+        if (this.type != other.type) {
             return false;
         }
         return true;
     }
-    
+
 }
