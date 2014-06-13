@@ -19,7 +19,6 @@ package ctfile2x3d.x3d;
 
 import ctfile2x3d.CTFile2X3DConfig;
 import ctfile2x3d.Display;
-import ctfile2x3d.RxnParser;
 import ctfile2x3d.ctfile.Atom;
 import ctfile2x3d.ctfile.AtomsAndBonds;
 import ctfile2x3d.ctfile.Bond;
@@ -121,7 +120,7 @@ public class X3DGenerator {
      * @param display the type of display for chemical structures.
      * @return a list of X3D objects along with the map of DEFs used.
      */
-    public NodesAndDefs getNodesAndDefs(AtomsAndBonds aab, Display display) {
+    private NodesAndDefs getNodesAndDefs(AtomsAndBonds aab, Display display) {
         List<Serializable> ser = new ArrayList<>();
         // Table of existing DEFs:
         Map<String, Serializable> defs = new HashMap<>();
@@ -414,7 +413,7 @@ public class X3DGenerator {
      * Inner class to encapsulate both the X3D nodes to be added to a scene and
      * the DEFs among them.
      */
-    class NodesAndDefs {
+    private class NodesAndDefs {
         
         private final List<Serializable> nodes;
         private final Map<String, Serializable> defs;
