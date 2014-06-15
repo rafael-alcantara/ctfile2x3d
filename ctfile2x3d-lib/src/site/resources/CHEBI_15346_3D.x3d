@@ -1,0 +1,1536 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<X3D>
+    <Scene>
+        <Transform translation="0.04734999999999956 2.07335 0.3973" DEF="AAM1">
+            <Group DEF="C">
+                <Transform scale="1.0 1.0 1.0" class="AtomSphereTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.2 0.2 0.2" transparency="0.3" class="AtomSphereMaterial"/>
+                        </Appearance>
+                        <Sphere radius="0.7"/>
+                    </Shape>
+                </Transform>
+                <Billboard axisOfRotation="0 0 0">
+                    <Transform translation="0 -0.45 0" class="AtomLabelTransform">
+                        <Shape>
+                            <Appearance>
+                                <Material diffuseColor="0 0 0" transparency="0.0" class="AtomLabelMaterial"/>
+                            </Appearance>
+                            <Text string="C" solid="true">
+                                <FontStyle family="SANS" justify="MIDDLE MIDDLE" size="0.5" class="AtomLabelFontStyle"/>
+                            </Text>
+                        </Shape>
+                    </Transform>
+                </Billboard>
+            </Group>
+        </Transform>
+        <Transform translation="-1.1556500000000005 1.4137499999999998 1.1083" DEF="AAM2">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-0.6775500000000004 3.0456499999999997 -0.5602" DEF="AAM3">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-2.0908500000000005 1.21205 -0.11369999999999997" DEF="AAM4">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-1.8783500000000004 2.3598500000000002 -0.9480999999999999" DEF="AAM5">
+            <Group DEF="O">
+                <Transform scale="1.0 1.0 1.0" class="AtomSphereTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="1 0 0" transparency="0.3" class="AtomSphereMaterial"/>
+                        </Appearance>
+                        <Sphere radius="0.6"/>
+                    </Shape>
+                </Transform>
+                <Billboard axisOfRotation="0 0 0">
+                    <Transform translation="0 -0.45 0" class="AtomLabelTransform">
+                        <Shape>
+                            <Appearance>
+                                <Material diffuseColor="0.5 0 0" transparency="0.0" class="AtomLabelMaterial"/>
+                            </Appearance>
+                            <Text string="O" solid="true">
+                                <FontStyle family="SANS" justify="MIDDLE MIDDLE" size="0.5" class="AtomLabelFontStyle"/>
+                            </Text>
+                        </Shape>
+                    </Transform>
+                </Billboard>
+            </Group>
+        </Transform>
+        <Transform translation="0.8340499999999995 1.11055 -0.31079999999999997" DEF="AAM6">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-0.9427500000000004 4.32375 0.050600000000000006" DEF="AAM7">
+            <Group DEF="N">
+                <Transform scale="1.0 1.0 1.0" class="AtomSphereTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0 0 1" transparency="0.3" class="AtomSphereMaterial"/>
+                        </Appearance>
+                        <Sphere radius="0.65"/>
+                    </Shape>
+                </Transform>
+                <Billboard axisOfRotation="0 0 0">
+                    <Transform translation="0 -0.45 0" class="AtomLabelTransform">
+                        <Shape>
+                            <Appearance>
+                                <Material diffuseColor="0 0 0.5" transparency="0.0" class="AtomLabelMaterial"/>
+                            </Appearance>
+                            <Text string="N" solid="true">
+                                <FontStyle family="SANS" justify="MIDDLE MIDDLE" size="0.5" class="AtomLabelFontStyle"/>
+                            </Text>
+                        </Shape>
+                    </Transform>
+                </Billboard>
+            </Group>
+        </Transform>
+        <Transform translation="-2.0965500000000006 4.8020499999999995 0.5556000000000001" DEF="AAM8">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-0.039750000000000396 5.306850000000001 0.2594" DEF="AAM9">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-1.8690500000000003 6.081950000000001 1.0563" DEF="AAM10">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-0.5784500000000004 6.383750000000001 0.8603000000000001" DEF="AAM11">
+            <Group USE="N"/>
+        </Transform>
+        <Transform translation="-2.9449500000000004 6.77975 1.6378" DEF="AAM12">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-4.3614500000000005 4.90845 1.2427" DEF="AAM13">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-4.155150000000001 6.16375 1.7209" DEF="AAM14">
+            <Group USE="N"/>
+        </Transform>
+        <Transform translation="-2.8232500000000007 7.99685 2.0944000000000003" DEF="AAM15">
+            <Group USE="N"/>
+        </Transform>
+        <Transform translation="-3.6049500000000005 1.0151500000000002 0.14820000000000003" DEF="AAM16">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-3.3308500000000003 4.253349999999999 0.6532" DEF="AAM17">
+            <Group USE="N"/>
+        </Transform>
+        <Transform translation="-5.24235 -1.62295 2.2051" DEF="AAM18">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-5.37355 -3.84045 2.8564" DEF="AAM19">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-5.58615 0.6329500000000001 2.4182" DEF="AAM20">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-3.9228500000000004 -0.05115000000000003 0.895" DEF="AAM21">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-5.079650000000001 -2.9856499999999997 1.7351" DEF="AAM22">
+            <Group DEF="P">
+                <Transform scale="1.0 1.0 1.0" class="AtomSphereTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="1 0.5 0" transparency="0.3" class="AtomSphereMaterial"/>
+                        </Appearance>
+                        <Sphere radius="1.0"/>
+                    </Shape>
+                </Transform>
+                <Billboard axisOfRotation="0 0 0">
+                    <Transform translation="0 -0.45 0" class="AtomLabelTransform">
+                        <Shape>
+                            <Appearance>
+                                <Material diffuseColor="0.5 0.25 0" transparency="0.0" class="AtomLabelMaterial"/>
+                            </Appearance>
+                            <Text string="P" solid="true">
+                                <FontStyle family="SANS" justify="MIDDLE MIDDLE" size="0.5" class="AtomLabelFontStyle"/>
+                            </Text>
+                        </Shape>
+                    </Transform>
+                </Billboard>
+            </Group>
+        </Transform>
+        <Transform translation="-6.03125 -3.30945 0.6938" DEF="AAM23">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-5.23315 -0.37915 1.4565" DEF="AAM24">
+            <Group USE="P"/>
+        </Transform>
+        <Transform translation="-6.26685 -0.34914999999999996 0.4446" DEF="AAM25">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-0.9107500000000004 0.30195000000000016 1.8153" DEF="AAM26">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="1.3317499999999995 -0.19835000000000003 2.4408" DEF="AAM27">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-0.4375500000000004 -1.1431499999999999 3.6171" DEF="AAM28">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-0.003750000000000364 0.04305000000000003 2.9269" DEF="AAM29">
+            <Group USE="P"/>
+        </Transform>
+        <Transform translation="0.03634999999999955 1.1289500000000001 3.8756" DEF="AAM30">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-3.7062500000000003 -3.24295 1.3153" DEF="AAM31">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-3.2218500000000003 -4.28475 0.6268" DEF="AAM32">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="4.86295 -6.723649999999999 -2.0099" DEF="AAM33">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="5.306849999999999 -7.416449999999999 -0.7034" DEF="AAM34">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="3.482249999999999 -6.595649999999999 -2.1372" DEF="AAM35">
+            <Group USE="N"/>
+        </Transform>
+        <Transform translation="2.8494499999999996 -6.101050000000001 -3.163" DEF="AAM36">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="3.335149999999999 -6.086449999999999 -4.287100000000001" DEF="AAM37">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="7.1099499999999995 -7.470549999999999 -0.6087" DEF="AAM38">
+            <Group DEF="S">
+                <Transform scale="1.0 1.0 1.0" class="AtomSphereTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.8 0.8 0" transparency="0.3" class="AtomSphereMaterial"/>
+                        </Appearance>
+                        <Sphere radius="1.0"/>
+                    </Shape>
+                </Transform>
+                <Billboard axisOfRotation="0 0 0">
+                    <Transform translation="0 -0.45 0" class="AtomLabelTransform">
+                        <Shape>
+                            <Appearance>
+                                <Material diffuseColor="0.4 0.4 0" transparency="0.0" class="AtomLabelMaterial"/>
+                            </Appearance>
+                            <Text string="S" solid="true">
+                                <FontStyle family="SANS" justify="MIDDLE MIDDLE" size="0.5" class="AtomLabelFontStyle"/>
+                            </Text>
+                        </Shape>
+                    </Transform>
+                </Billboard>
+            </Group>
+        </Transform>
+        <Transform translation="1.6703499999999996 -4.03115 -2.4487" DEF="AAM39">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="1.5519499999999997 -5.49085 -2.969" DEF="AAM40">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="0.4282499999999996 -3.47235 -2.1265" DEF="AAM41">
+            <Group USE="N"/>
+        </Transform>
+        <Transform translation="0.9389499999999995 -2.25725 -0.38780000000000003" DEF="AAM42">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="0.0883499999999996 -2.87125 -1.0241" DEF="AAM43">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-1.2872500000000004 -2.9460499999999996 -0.5297999999999999" DEF="AAM44">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-1.5035500000000004 -1.8148499999999999 0.30060000000000003" DEF="AAM45">
+            <Group USE="O"/>
+        </Transform>
+        <Transform translation="-0.8355500000000003 -4.34285 1.5858" DEF="AAM46">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-1.6912500000000004 -4.23875 0.27880000000000005" DEF="AAM47">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="-1.4370500000000004 -5.52075 -0.574" DEF="AAM48">
+            <Group USE="C"/>
+        </Transform>
+        <Transform translation="0.7082499999999996 2.58095 1.1044" DEF="AAM49">
+            <Group DEF="H">
+                <Transform scale="1.0 1.0 1.0" class="AtomSphereTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.6 0.6 0.6" transparency="0.3" class="AtomSphereMaterial"/>
+                        </Appearance>
+                        <Sphere radius="0.25"/>
+                    </Shape>
+                </Transform>
+                <Billboard axisOfRotation="0 0 0">
+                    <Transform translation="0 -0.45 0" class="AtomLabelTransform">
+                        <Shape>
+                            <Appearance>
+                                <Material diffuseColor="0 0 0" transparency="0.0" class="AtomLabelMaterial"/>
+                            </Appearance>
+                            <Text string="H" solid="true">
+                                <FontStyle family="SANS" justify="MIDDLE MIDDLE" size="0.5" class="AtomLabelFontStyle"/>
+                            </Text>
+                        </Shape>
+                    </Transform>
+                </Billboard>
+            </Group>
+        </Transform>
+        <Transform translation="-1.6222500000000004 2.13475 1.79" DEF="AAM50">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-0.09395000000000042 3.20645 -1.4715" DEF="AAM51">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-1.7539500000000006 0.37465000000000015 -0.7287" DEF="AAM52">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="1.5438499999999995 1.6207500000000001 -0.7542" DEF="AAM53">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="0.9470499999999995 5.254049999999999 -0.00269999999999998" DEF="AAM54">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-5.274750000000001 4.45965 1.3234" DEF="AAM55">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-2.0027500000000007 8.44015 2.0366999999999997" DEF="AAM56">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-3.5621500000000004 8.42775 2.4723" DEF="AAM57">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-4.10545 0.94815 -0.8232999999999999" DEF="AAM58">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-3.9809500000000004 1.90705 0.6416999999999999" DEF="AAM59">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-6.89245 -3.17725 0.8155" DEF="AAM60">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-7.1099499999999995 -0.4786499999999999 0.6615" DEF="AAM61">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="1.4871499999999997 -0.8564499999999999 1.8774" DEF="AAM62">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-0.6974500000000003 1.38665 4.287100000000001" DEF="AAM63">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-3.4253500000000003 -5.1918500000000005 1.2084" DEF="AAM64">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-3.7843500000000003 -4.37025 -0.3107" DEF="AAM65">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="5.28335 -5.713749999999999 -2.025" DEF="AAM66">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="5.26375 -7.28415 -2.859" DEF="AAM67">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="4.93355 -6.87635 0.16960000000000003" DEF="AAM68">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="4.928749999999999 -8.44015 -0.6648999999999999" DEF="AAM69">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="2.96445 -6.83375 -1.3932" DEF="AAM70">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="7.108749999999999 -8.12915 0.5798000000000001" DEF="AAM71">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="2.1132499999999994 -3.41225 -3.2328" DEF="AAM72">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="2.3570499999999996 -4.0081500000000005 -1.5949" DEF="AAM73">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="1.0060499999999997 -6.13325 -2.2829" DEF="AAM74">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="0.9631499999999995 -5.49605 -3.8908" DEF="AAM75">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-0.24515000000000042 -3.57305 -2.7681" DEF="AAM76">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-1.9629500000000004 -2.79595 -1.3778" DEF="AAM77">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-2.45915 -1.7729499999999998 0.49110000000000004" DEF="AAM78">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-1.0408500000000003 -3.51675 2.2677" DEF="AAM79">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-1.0306500000000005 -5.270250000000001 2.1266" DEF="AAM80">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="0.2354499999999995 -4.324450000000001 1.3686" DEF="AAM81">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-0.3732500000000004 -5.66445 -0.6995" DEF="AAM82">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-1.9070500000000004 -5.45365 -1.5594999999999999" DEF="AAM83">
+            <Group USE="H"/>
+        </Transform>
+        <Transform translation="-1.7966500000000005 -6.431749999999999 -0.09139999999999998" DEF="AAM84">
+            <Group USE="H"/>
+        </Transform>
+        <Transform rotation="-0.7081 0.0 -0.7867 2.308910654014195" translation="0.44069999999999954 1.59195 0.04325000000000001" DEF="1-6">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4308342" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.7110000000000001 -0.0 1.203 2.0118096861526205" translation="-0.5541500000000005 1.74355 0.7528" DEF="1-2">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5452515" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.7069999999999999 0.0 -0.24490000000000012 2.5492348646963747" translation="-1.0332000000000003 0.85785 1.4618" DEF="2-26">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.340121" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.9575 0.0 0.7249 0.8902245122645702" translation="-0.31510000000000044 2.5595 -0.08145000000000002" DEF="1-3">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5452034" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.6108 -0.0 0.2652 0.48030522456361163" translation="-0.8101500000000004 3.6847000000000003 -0.2548" DEF="3-7">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4411618" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-1.222 0.0 0.9352 1.7011300727263305" translation="-1.6232500000000005 1.3129 0.4973000000000001" DEF="2-4">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5519555" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.2619 -0.0 1.5141 1.698243170016021" translation="-2.8479000000000005 1.1136000000000001 0.01725000000000003" DEF="4-16">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5491482" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.3878999999999999 0.0 1.2008 2.0686099506765774" translation="-1.2779500000000004 2.70275 -0.75415" DEF="3-5">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4362134" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.8344 0.0 -0.21250000000000013 0.6436037168678106" translation="-1.9846000000000004 1.7859500000000001 -0.5308999999999999" DEF="4-5">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4348605" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.5050000000000001 -0.0 1.1538000000000002 1.2078580458752852" translation="-1.5196500000000004 4.5629 0.30310000000000004" DEF="7-8">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3472381" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.3472381" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.2088 0.0 -0.903 0.7559427180014698" translation="-0.4912500000000004 4.815300000000001 0.15500000000000003" DEF="7-9">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3511077" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.3511077" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.5006999999999999 0.0 -0.22750000000000026 0.40583669384263793" translation="-1.9828000000000006 5.442 0.80595" DEF="8-10">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3930545" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.3930545" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.09759999999999991 -0.0 1.2342999999999997 1.9879477192409627" translation="-2.7137000000000002 4.527699999999999 0.6044" DEF="8-17">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3542873" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.3542873" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.6009 -0.0 0.5387 0.643110705291396" translation="-0.3091000000000004 5.845300000000001 0.5598500000000001" DEF="9-11">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.345731" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.345731" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.5814999999999999 -0.0 1.0759 1.0522983359624984" translation="-2.4070000000000005 6.43085 1.3470499999999999" DEF="10-12">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4080582" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.4080582" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.19599999999999995 0.0 -1.2906 1.343594385988956" translation="-1.2237500000000003 6.232850000000001 0.9583" DEF="10-11">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3398312" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.3398312" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.08310000000000017 -0.0 1.2102000000000004 2.0406731942641985" translation="-3.5500500000000006 6.47175 1.67935" DEF="12-14">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3604946" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.3604946" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.45660000000000034 0.0 -0.1216999999999997 0.3703371707234046" translation="-2.8841000000000006 7.3883 1.8661" DEF="12-15">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3056136" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.5894999999999999 0.0 -1.0306000000000002 2.074991982975914" translation="-3.8461500000000006 4.5809 0.94795" DEF="13-17">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3560246" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.3560246" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.4782000000000002 0.0 -0.2062999999999997 0.3932700540133459" translation="-4.2583 5.5361 1.4818" DEF="13-14">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3590486" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.8333333" class="BondMaterial BondType4"/>
+                        </Appearance>
+                        <Cylinder height="1.3590486" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.7468 -0.0 0.31789999999999985 2.490974276936501" translation="-3.7639000000000005 0.4820000000000001 0.5216000000000001" DEF="16-21">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.340062" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.4198000000000002 0.0 -1.3734000000000006 1.748077909052961" translation="-4.392950000000001 -3.1143 1.5252" DEF="22-31">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4589938" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.46999999999999975 0.0 -0.16269999999999918 2.7916314986652306" translation="-5.1610000000000005 -2.3042999999999996 1.9701" DEF="18-22">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4506283" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.7485999999999999 0.0 -0.009199999999999875 0.5418232433512382" translation="-5.23775 -1.00105 1.8308" DEF="18-24">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4517317" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-1.1212999999999997 0.0 -0.29389999999999894 0.9353952478994364" translation="-5.2266 -3.41305 2.29575" DEF="19-22">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4402688" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4402688" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.9617000000000002 0.0 -0.35299999999999976 2.350135606792881" translation="-5.40965 0.12690000000000007 1.93735" DEF="20-24">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4400772" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4400772" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.5614999999999999 -0.0 1.3102999999999998 1.7969483090351717" translation="-4.578 -0.21515 1.1757499999999999" DEF="21-24">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4627892" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-1.0413000000000001 0.0 0.9515999999999991 1.7964320442135857" translation="-5.55545 -3.14755 1.21445" DEF="22-23">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.447306" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-1.0118999999999998 0.0 1.0336999999999996 1.5500601530275564" translation="-5.75 -0.36415 0.95055" DEF="24-25">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4468508" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="1.1116 0.0 -0.907 1.7493333381812701" translation="-0.4572500000000004 0.1725000000000001 2.3710999999999998" DEF="26-29">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4578521" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.4861 -0.0 1.3355 1.4025474808230698" translation="0.6639999999999996 -0.07765 2.6838499999999996" DEF="27-29">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4415711" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.6902000000000004 0.0 -0.4338 0.602111045124957" translation="-0.22065000000000037 -0.5500499999999999 3.2720000000000002" DEF="28-29">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4393154" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4393154" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.9487000000000001 0.0 -0.040099999999999913 0.7185089372944011" translation="0.016299999999999593 0.5860000000000001 3.40125" DEF="29-30">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4425043" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.6884999999999999 0.0 -0.48439999999999994 2.461961112775149" translation="-3.4640500000000003 -3.7638499999999997 0.97105" DEF="31-32">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3394114" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.348 0.0 -1.5306 1.5414990490578753" translation="-2.4565500000000005 -4.261749999999999 0.45280000000000004" DEF="32-47">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5703363" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.12729999999999997 0.0 1.3807000000000005 1.4787421784164185" translation="4.172599999999999 -6.659649999999999 -2.07355" DEF="33-35">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3924518" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="1.3065 0.0 -0.4438999999999993 2.036109032083365" translation="5.084899999999999 -7.070049999999999 -1.3566500000000001" DEF="33-34">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5440081" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.0947 0.0 -1.8031000000000006 1.600749951221253" translation="6.208399999999999 -7.443499999999999 -0.65605" DEF="34-38">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.8063954" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-1.0257999999999998 0.0 0.6327999999999996 1.1813902129365779" translation="3.1658499999999994 -6.34835 -2.6501" DEF="35-36">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3028164" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.19399999999999995 -0.0 1.2974999999999999 1.1354410437679656" translation="2.2006999999999994 -5.79595 -3.066" DEF="36-40">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4468884" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-1.1241000000000008 0.0 -0.4856999999999996 1.5588740753875132" translation="3.0922999999999994 -6.09375 -3.7250500000000004" DEF="36-37">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.2246299" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.2246299" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.32220000000000004 -0.0 1.2421 1.160090373880673" translation="1.0492999999999997 -3.7517500000000004 -2.2876000000000003" DEF="39-41">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3996009" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.5202999999999998 0.0 0.11839999999999984 2.7911275589846127" translation="1.6111499999999996 -4.761 -2.70885" DEF="39-40">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5541734" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="1.1024 -0.0 0.3399 1.0904432996985283" translation="0.2582999999999996 -3.1718 -1.5753" DEF="41-43">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3008224" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.6363 0.0 0.8505999999999999 2.0948916102858073" translation="0.5136499999999995 -2.56425 -0.7059500000000001" DEF="42-43">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="-0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.226945" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+                <Transform scale="0.5 0.5 0.5" translation="0.1 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.226945" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.4943000000000001 -0.0 1.3756 1.6219245297263079" translation="-0.5994500000000005 -2.9086499999999997 -0.77695" DEF="43-44">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4636266" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.8086 -0.0 0.4039999999999999 2.531376620982542" translation="-1.4892500000000004 -3.5923999999999996 -0.12549999999999994" DEF="44-47">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5773786" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.8304 -0.0 0.21629999999999994 0.648971191756224" translation="-1.3954000000000004 -2.3804499999999997 -0.11459999999999995" DEF="44-45">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.4198462" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-1.307 0.0 0.8557 1.504257939320468" translation="-1.2634000000000003 -4.2908 0.9323000000000001" DEF="46-47">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5656655" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.8528 0.0 -0.2542 2.534814625694104" translation="-1.5641500000000004 -4.87975 -0.14759999999999995" DEF="47-48">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.5605799" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.7071000000000001 0.0 -0.6609 1.0877816263554017" translation="0.3777999999999996 2.32715 0.75085" DEF="1-49">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.092903" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.6817 -0.0 0.4665999999999999 0.8532235956492037" translation="-1.3889500000000004 1.7742499999999999 1.44915" DEF="2-50">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0964814" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.9113 0.0 -0.5836 1.4232831229171075" translation="-0.3857500000000004 3.1260499999999998 -1.01585" DEF="3-51">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0940353" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.615 0.0 -0.3369 2.4444637713082162" translation="-1.9224000000000006 0.7933500000000001 -0.4212" DEF="4-52">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0922295" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.4434 0.0 -0.7098 1.0233311560617846" translation="1.1889499999999995 1.36565 -0.5325" DEF="6-53">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.9801651" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.2621 0.0 -0.9867999999999999 1.6224635727826133" translation="0.45364999999999955 5.28045 0.12835000000000002" DEF="9-54">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0223788" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.0807 -0.0 0.9133000000000004 2.0260067702242126" translation="-4.818100000000001 4.68405 1.2830499999999998" DEF="13-55">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0208089" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.05770000000000053 0.0 -0.8205 1.0764768909123563" translation="-2.4130000000000007 8.218499999999999 2.06555" DEF="15-56">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.93437916" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.3778999999999999 -0.0 0.7388999999999997 1.0919059888000444" translation="-3.1927000000000003 8.212299999999999 2.2833500000000004" DEF="15-57">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.93512374" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.9714999999999999 0.0 0.5004999999999997 1.632027499620606" translation="-3.8552000000000004 0.9816500000000001 -0.33754999999999996" DEF="16-58">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.094898" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.49349999999999994 -0.0 0.3759999999999999 0.6077760261342178" translation="-3.7929500000000003 1.4611 0.39494999999999997" DEF="16-59">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0864639" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.12170000000000003 -0.0 0.8612000000000002 1.4199543191815645" translation="-6.46185 -3.24335 0.75465" DEF="23-60">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.8797461" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.21689999999999998 -0.0 0.8430999999999997 1.7184693805190903" translation="-6.6884 -0.41389999999999993 0.55305" DEF="25-61">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.8801326" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.5633999999999999 0.0 -0.1554000000000002 2.4154079975732694" translation="1.4094499999999996 -0.5274 2.1591" DEF="27-62">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.8801502" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.41150000000000064 -0.0 0.7337999999999999 1.2735609044449427" translation="-0.3305500000000004 1.2578 4.0813500000000005" DEF="30-63">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.8798886" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.5815999999999999 -0.0 0.20350000000000001 2.544908919534586" translation="-3.3236000000000003 -4.738300000000001 0.9176" DEF="32-64">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0965861" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.9375 0.0 0.5625 1.6488408396387624" translation="-3.5031000000000003 -4.327500000000001 0.15805000000000002" DEF="32-65">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0966415" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.015099999999999891 0.0 -0.4204000000000008 0.3946893867099253" translation="5.07315 -6.218699999999999 -2.01745" DEF="33-66">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.094012" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.8491 0.0 -0.40080000000000027 2.1089691987035537" translation="5.06335 -7.0039 -2.43445" DEF="33-67">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0935135" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.873 -0.0 0.37329999999999863 1.0535982845019898" translation="5.1202 -7.1464 -0.2669" DEF="34-68">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0923324" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.03850000000000009 -0.0 0.3780999999999999 2.7861081635442906" translation="5.117799999999999 -7.928299999999999 -0.68415" DEF="34-69">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0919724" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.744 -0.0 0.5177999999999994 1.8276663740367591" translation="3.2233499999999995 -6.7147 -1.7652" DEF="35-70">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.9372003" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="1.1885000000000001 -0.0 0.001200000000000756 2.076815234541641" translation="7.109349999999999 -7.799849999999999 -0.014449999999999963" DEF="38-71">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.3587817" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.7841 0.0 -0.44289999999999985 0.9686760988017463" translation="1.8917999999999995 -3.7217000000000002 -2.84075" DEF="39-72">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0927079" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.8538000000000001 0.0 -0.6867000000000001 1.5498080245270323" translation="2.0136999999999996 -4.01965 -2.0218" DEF="39-73">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.095929" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.6860999999999997 -0.0 0.5459 2.2031217658743785" translation="1.2789999999999997 -5.81205 -2.62595" DEF="40-74">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0869304" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.9218000000000002 0.0 0.5888000000000002 1.575550354914617" translation="1.2575499999999997 -5.49345 -3.4299" DEF="40-75">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0938134" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.6416 0.0 0.6734 1.6786421827104834" translation="0.09154999999999958 -3.5227 -2.4473000000000003" DEF="41-76">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.9355526" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.848 0.0 0.6757 1.433238369533976" translation="-1.6251000000000004 -2.8709999999999996 -0.9538" DEF="44-77">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0946252" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.1905 -0.0 0.9555999999999998 1.5278221215318388" translation="-1.9813500000000004 -1.7938999999999998 0.39585000000000004" DEF="45-78">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="0.97530365" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.6819 -0.0 0.20529999999999993 0.7114448450305296" translation="-0.9382000000000004 -3.9298 1.9267500000000002" DEF="46-79">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0906773" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.5407999999999997 -0.0 0.19510000000000016 2.5866528430813878" translation="-0.9331000000000005 -4.8065500000000005 1.8561999999999999" DEF="46-80">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0911459" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.21720000000000006 0.0 -1.0709999999999997 1.5539604712103656" translation="-0.3000500000000004 -4.3336500000000004 1.4772" DEF="46-81">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0929571" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.12550000000000006 0.0 -1.0638 1.7041516169761324" translation="-0.9051500000000003 -5.5926 -0.6367499999999999" DEF="48-82">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.080773" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="-0.9854999999999999 0.0 0.47 1.509417519045967" translation="-1.6720500000000005 -5.4872 -1.0667499999999999" DEF="48-83">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0938979" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Transform rotation="0.4826 -0.0 0.35960000000000014 2.5577740503547597" translation="-1.6168500000000003 -5.976249999999999 -0.3327" DEF="48-84">
+            <Group>
+                <Transform scale="0.5 0.5 0.5" translation="0 0 0" class="BondCylinderTransform">
+                    <Shape>
+                        <Appearance>
+                            <Material diffuseColor="0.75 0.75 0.75" transparency="0.5" class="BondMaterial BondTypenull"/>
+                        </Appearance>
+                        <Cylinder height="1.0918498" radius="0.05" class="BondCylinder"/>
+                    </Shape>
+                </Transform>
+            </Group>
+        </Transform>
+        <Viewpoint description="" position="0.0 0.0 10"/>
+    </Scene>
+</X3D>

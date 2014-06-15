@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0
+        http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Home</title>
+		<author email="rafael.alcantara.martin@gmai.com">Rafael
+            Alcántara</author>
+	</properties>
+	
+	<body>
+		<section name="CTFile2X3D">
+			<p>
+				Utility library to convert MDL <a
+                href="http://download.accelrys.com/freeware/ctfile-formats/ctfile-formats.zip">CTFiles</a>
+                into <a
+                href="http://www.web3d.org/realtime-3d/x3d/what-x3d">X3D</a>.
+			</p>
+            <subsection name="Supported input formats">
+                <ul>
+                    <li>
+                        <b>MOL v2 (2D, 3D)</b>
+                    </li>
+                    <li>
+                        <b>RXN <i>with atom-atom mappings</i></b>
+                    </li>
+                </ul>
+            </subsection>
+            <subsection name="Output format">
+                <p>
+                    <b>X3D</b> representing chemicalstructures in wireframe,
+                    balls and sticks, spacefill or a mixed mode (wireframe plus
+                    spacefill), depending on the configuration.
+                </p>
+                <p>
+                    Please note:
+                </p>
+                <ul>
+                    <li>Any implicit hydrogens in the processed structures will
+                        <i>not</i> be made explicit.</li>
+                    <li>RXN with no atom-atom mappings will give quite
+                        unexpected results.</li>
+                </ul>
+            </subsection>
+		</section>
+	</body>
+</document>

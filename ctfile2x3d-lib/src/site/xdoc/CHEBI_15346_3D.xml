@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2014 rafa
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<document xmlns='http://maven.apache.org/XDOC/2.0'
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0
+        http://maven.apache.org/xsd/xdoc-2.0.xsd">
+    <properties>
+        <title>MOL to X3D</title>
+        <author email="rafael.alcantara.martin@gmai.com">Rafael
+            Alcántara</author>
+    </properties>
+    <head>
+        <script src="js/ctfile2x3d.js"></script>
+        <script src="x3dom-1.6.0/x3dom-full.js"></script>
+    </head>
+    <body>
+        <section name="MOL to X3D conversion">
+            <div id="coenzymeA">
+                <macro name="snippet">
+                    <param name="file"
+                        value="src/site/resources/CHEBI_15346_3D.x3d"/>
+                    <param name="verbatim" value="false"/>
+                </macro>
+            </div>
+            <div>
+                <label for="displaySelect">Display as </label>
+                <select onchange="setDisplay(this.value)" id="displaySelect">
+                    <option value=""></option>
+                    <option value="WIREFRAME">Wireframe</option>
+                    <!-- option value="STICKS">Sticks</option -->
+                    <option value="BALLS_STICKS">Balls and sticks</option>
+                    <option value="SPACEFILL">Spacefill</option>
+                    <option value="MIXED">Mixed</option>
+                </select>
+            </div>
+            <p>
+                This X3D model of Coenzyme A has been generated using a <a
+                href="http://www.ebi.ac.uk/chebi/saveStructure.do?defaultImage=false&amp;chebiId=15346&amp;imageIndex=1&amp;imageId=78">mol
+                file</a> from <a href="http://www.ebi.ac.uk/chebi">ChEBI</a>.
+            </p>
+            <p>
+                Please note that the original MOL file alredy included 3D
+                coordinates. <b>ctfe2x3d-lib</b> does <i>not</i> generate them
+                from a 2D structure.
+            </p>
+            <macro name="snippet">
+                <param name="file" value="src/site/resources/x3dom.html"/>
+                <param name="verbatim" value="false"/>
+            </macro>
+        </section>
+    </body>
+
+</document>

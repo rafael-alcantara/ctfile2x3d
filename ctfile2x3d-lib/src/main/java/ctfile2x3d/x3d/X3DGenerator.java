@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.web3d.x3d.Billboard;
 import org.web3d.x3d.Group;
 import org.web3d.x3d.ObjectFactory;
 import org.web3d.x3d.PositionInterpolator;
@@ -49,10 +50,10 @@ import org.web3d.x3d.X3D;
 public class X3DGenerator {
 
     private static final String AAM = "AAM";
-    private static final String fraction_changed = "fraction_changed";
-    private static final String set_fraction = "set_fraction";
-    private static final String value_changed = "value_changed";
-    private static final String translation = "translation";
+    private static final String FRACTION_CHANGED = "fraction_changed";
+    private static final String SET_FRACTION = "set_fraction";
+    private static final String VALUE_CHANGED = "value_changed";
+    private static final String TRANSLATION = "translation";
 
     private static final Logger logger =
             Logger.getLogger(X3DGenerator.class.getName());
@@ -71,7 +72,7 @@ public class X3DGenerator {
      * @param display the type of display for chemical structures.
      * @return
      */
-    private Transform getAtomLabel(Element elem, Atom atom, Display display) {
+    private Serializable getAtomLabel(Element elem, Atom atom, Display display) {
         float transparency = 1.0F;
         switch (display) {
             case WIREFRAME:
@@ -79,31 +80,34 @@ public class X3DGenerator {
                 transparency = 0.0F;
                 break;
         }
-        // TODO: Billboard?
-        Transform tr = x3dOf.createTransform()
-            .withClazz(CssClass.AtomLabelTransform.name())
-            .withTranslation("0 -0.45 0")
+        Billboard bb = x3dOf.createBillboard().withAxisOfRotation("0 0 0")
             .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                x3dOf.createShape().withRest(
-                    x3dOf.createAppearance()
-                        .withAppearanceChildContentModel(
-                            x3dOf.createMaterial()
-                                .withClazz(CssClass.AtomLabelMaterial.name())
-                                .withDiffuseColor(elem.getLabelColor())
-                                .withTransparency(transparency)
-                        ),
-                    x3dOf.createText()
-                        .withString(atom.getSymbol())
-                        .withFontStyle(
-                            x3dOf.createFontStyle()
-                                .withClazz(CssClass.AtomLabelFontStyle.name())
-                                .withFamily("SANS")
-                                .withJustify("MIDDLE MIDDLE")
-                                .withSize(conf.getAtomSymbolSize())
+                x3dOf.createTransform()
+                    .withClazz(CssClass.AtomLabelTransform.name())
+                    .withTranslation("0 -0.45 0")
+                    .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
+                        x3dOf.createShape().withRest(
+                            x3dOf.createAppearance()
+                                .withAppearanceChildContentModel(
+                                    x3dOf.createMaterial()
+                                        .withClazz(CssClass.AtomLabelMaterial.name())
+                                        .withDiffuseColor(elem.getLabelColor())
+                                        .withTransparency(transparency)
+                                ),
+                            x3dOf.createText()
+                                .withString(atom.getSymbol())
+                                .withSolid(true)
+                                .withFontStyle(
+                                    x3dOf.createFontStyle()
+                                        .withClazz(CssClass.AtomLabelFontStyle.name())
+                                        .withFamily("SANS")
+                                        .withJustify("MIDDLE MIDDLE")
+                                        .withSize(conf.getAtomSymbolSize())
+                                )
                         )
-                )
+                    )
             );
-        return tr;
+        return bb;
     }
 
     /**
@@ -221,6 +225,34 @@ public class X3DGenerator {
         return group;
     }
 
+    /*
+    private Group getGroup2(Bond bond, double bondLength, Display display) {
+        Group group = x3dOf.createGroup();
+        float radius = 0.5f;
+        float transparency = 0.5f;
+        switch (bond.getType()) {
+            case 2:
+            case 3:
+                radius *= bond.getType();
+                break;
+            case 4: // aromatic
+                // Add extra cylinder:
+                group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
+                    x3dOf.createTransform()
+                        .withClazz(CssClass.BondCylinderTransform.name())
+                        .withTranslation(TRANSLATION)
+                        .withScale(scale + " " + scale + " " + scale)
+                        .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
+                            getBondCylinder(bondLength, display, bondType));)
+                        
+                break;
+            default:
+                break;
+        }
+        return group;
+    }
+    */
+    
     /**
      * Generates the ball and label for one atom.
      * @param atom the atom to render.
@@ -236,7 +268,7 @@ public class X3DGenerator {
         }
         Group group = x3dOf.createGroup().withDEF(atom.getSymbol());
         Transform ball = getAtomBall(elem, display);
-        Transform label = getAtomLabel(elem, atom, display);
+        Serializable label = getAtomLabel(elem, atom, display);
         group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(ball,
                 label);
         return group;
@@ -429,13 +461,13 @@ public class X3DGenerator {
                                 + pAtom.getCoordinates().toString() + " "
                                 + pAtom.getCoordinates().toString());
                 ROUTE r1 = x3dOf.createROUTE()
-                        .withFromNode(ts).withFromField(fraction_changed)
-                        .withToNode(pi).withToField(set_fraction);
+                        .withFromNode(ts).withFromField(FRACTION_CHANGED)
+                        .withToNode(pi).withToField(SET_FRACTION);
                 ROUTE r2 = x3dOf.createROUTE()
-                        .withFromNode(pi).withFromField(value_changed)
+                        .withFromNode(pi).withFromField(VALUE_CHANGED)
                         .withToNode(nodesAndDefs.getDefs()
                                 .get(X3DGenerator.AAM + aam.toString()))
-                        .withToField(translation);
+                        .withToField(TRANSLATION);
                 logger.log(Level.FINE, "adding routes");
                 nodesAndDefs.getNodes().add(pi);
                 nodesAndDefs.getNodes().add(r1);

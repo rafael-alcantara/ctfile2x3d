@@ -124,7 +124,7 @@ public class CTFile2X3DServlet extends HttpServlet {
             try (InputStream is = url.openStream()) {
                 X3D x3d = parser.parse(is, display);
                 Marshaller m = jc.createMarshaller();
-                m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
                 m.marshal(x3d, resp.getWriter());
                 resp.flushBuffer();
             }

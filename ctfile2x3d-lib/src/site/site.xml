@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0
+        http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+
+	<bannerRight>
+		<name>CTFile2X3D</name>
+		<alt>CTFile2X3D</alt>
+		<href>http://github.com</href>
+		<src>img/ctfile2x3d.png</src>
+	</bannerRight>
+	<bannerLeft>
+		<name>${project.name}</name>
+		<href>./index.html</href>
+	</bannerLeft>
+
+	<poweredBy>
+		<logo name="Maven" href="http://maven.apache.org/"
+			img="http://maven.apache.org/images/logos/maven-feather.png" />
+	</poweredBy>
+
+	<body>
+		<links>
+			<item href="http://github.com/rafael-alcantara/ctfile2x3d"
+				name="Git repo"/>
+		</links>
+		<breadcrumbs>
+			<item name="CTFile2X3D" href="./index.html"/>
+		</breadcrumbs>
+
+		<menu ref="parent" />
+        <menu name="CTFile2X3D">
+            <item name="Home" href="index.html" />
+            <item name="MOL2X3D" href="CHEBI_15346_3D.html"/>
+        </menu>
+		<menu ref="reports" />
+	</body>
+</project>
