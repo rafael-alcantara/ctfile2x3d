@@ -21,7 +21,7 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
      
     public static final String ATOM_SYMBOL_SIZE = "atom.symbol.size";
     public static final String ATOM_TRANSPARENCY = "atom.transparency";
-     public static final String BOND_DISTANCE = "bond.distance";
+    public static final String BOND_DISTANCE = "bond.distance";
     public static final String BOND_COLOR = "bond.color";
     public static final String MOLECULE_SPACING = "molecule.spacing";
     public static final String MOL_URL_PATTERN = "url.pattern.mol";
@@ -42,9 +42,15 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
      */
     private float bondDistance = 0.1f;
     /**
-     * Attribute : BondColor
+     * Attribute : BondColor.
+     * <br>
+     * 0: default, 1: single, 2: double, 3: triple, 4: aromatic.
      */
-    private String bondColor = "0.75 0.75 0.75";
+    private String[] bondColor = {
+        "0.75 0.75 0.75", "0.75 0.75 0.75", "0.75 0.75 0.75", "0.75 0.75 0.75",
+        "1 0.75 1"
+    };
+
     /**
      * Attribute : MoleculeSpacing
      */
@@ -129,8 +135,13 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
         if (props.containsKey(BOND_DISTANCE)){
             setBondDistance(Float.parseFloat(props.getProperty(BOND_DISTANCE)));
         }
+        for (int i = 0; i < bondColor.length; i++){
+            if (props.containsKey(BOND_COLOR + i)){
+                setBondColor(i, props.getProperty(BOND_COLOR));
+            }
+        }
         if (props.containsKey(BOND_COLOR)){
-            setBondColor(props.getProperty(BOND_COLOR));
+            setBondColor(0, props.getProperty(BOND_COLOR));
         }
         if (props.containsKey(MOLECULE_SPACING)){
             setMoleculeSpacing(
@@ -194,12 +205,17 @@ public class CTFile2X3DConfig implements CTFile2X3DConfigMBean {
 
     @Override
     public String getBondColor() {
-        return bondColor;
+        return bondColor[0];
+    }
+    
+    @Override
+    public String getBondColor(int type){
+        return bondColor[type];
     }
 
     @Override
-    public void setBondColor(String value) {
-        bondColor = value;
+    public void setBondColor(int type, String value) {
+        bondColor[type] = value;
     }
 
     @Override

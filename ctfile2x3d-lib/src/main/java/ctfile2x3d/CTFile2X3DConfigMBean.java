@@ -68,10 +68,19 @@ public interface CTFile2X3DConfigMBean {
     public String getBondColor();
 
     /**
+     * Get color of cylinders representing bonds of a given type.
+     * @param type the type of bond (0 means set the default bond color).
+     * @return 
+     */
+    public String getBondColor(int type);
+
+    /**
      * Set color of cylinders representing bonds.
+     * @param type the type of bond: 0: default, 1: single, 2: double,
+     *      3: triple, 4: aromatic.
      * @param value
      */
-    public void setBondColor(String value);
+    public void setBondColor(int type, String value);
 
     /**
      * Get font size for the atom symbols.

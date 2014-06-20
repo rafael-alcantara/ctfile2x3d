@@ -129,7 +129,7 @@ public class MolParserTest {
     }
 
     @Test
-    @Ignore("only visual check")
+    //@Ignore("only visual check")
     public void testParse() throws Exception {
         System.out.println("parse - only visual check!");
         System.out.println("before getting MOL");

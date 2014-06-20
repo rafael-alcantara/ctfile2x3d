@@ -27,13 +27,11 @@ import ctfile2x3d.geom.Point;
 import ctfile2x3d.geom.Vector;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.web3d.x3d.Appearance;
 import org.web3d.x3d.Billboard;
 import org.web3d.x3d.Group;
 import org.web3d.x3d.Material;
@@ -214,32 +212,31 @@ public class X3DGenerator {
             case 1:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         getBondCylinderTransform("0 0 0", defs, bondLength,
-                                display, null));
+                                bond, display));
                 break;
             case 2:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         getBondCylinderTransform("-" + conf.getBondDistance()
-                                + " 0 0", defs, bondLength, display, null),
+                                + " 0 0", defs, bondLength, bond, display),
                         getBondCylinderTransform(conf.getBondDistance()
-                                + " 0 0", defs, bondLength, display, null));
+                                + " 0 0", defs, bondLength, bond, display));
                 break;
             case 3:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         getBondCylinderTransform("-" + conf.getBondDistance()
-                                + " 0 0", defs, bondLength, display, null),
+                                + " 0 0", defs, bondLength, bond, display),
                         getBondCylinderTransform("0 0 0", defs, bondLength,
-                                display, null),
+                                bond, display),
                         getBondCylinderTransform(conf.getBondDistance()
-                                + " 0 0", defs, bondLength, display, null));
+                                + " 0 0", defs, bondLength, bond, display));
                 break;
             case 4:
                 // aromatic
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         getBondCylinderTransform("-" + conf.getBondDistance()
-                                + " 0 0", defs, bondLength, display, null),
+                                + " 0 0", defs, bondLength, bond, display),
                         getBondCylinderTransform(conf.getBondDistance()
-                                + " 0 0", defs, bondLength, display,
-                                bond.getType()));
+                                + " 0 0", defs, bondLength, bond, display));
                 break;
         }
         return group;
@@ -362,38 +359,32 @@ public class X3DGenerator {
      * @param defs a table of DEFs already defined. If the DEF key is not
      *      already there, it will be added.
      * @param bondLength the length of the bond.
+     * @param bond the bond to render
      * @param display the type of display for chemical structures.
-     * @param bondType the bond type (<code>null)</code> means render default).
      * @return a Shape with a Cylinder for the bond.
      */
     private Shape getBondCylinder(Map<String, Serializable> defs,
-            double bondLength, Display display, Integer bondType) {
-        Serializable appearance;
-        float transparency = 0.5F;
-        float radius = 0.05F;
+            double bondLength, Bond bond, Display display) {
+        float radius;
         switch (display) {
             case WIREFRAME:
-                transparency = 0.0F;
                 radius = 0.02F;
                 break;
-            case SPACEFILL:
-                transparency = 1.0F;
-                break;
+            default:
+                radius = 0.05F;
         }
-        if (bondType == 4) {
-            transparency += (1 - transparency) / 1.5; // FIXME?
-        }
-        final String appDef = APP_BOND + (bondType == null? "" : bondType);
+        String bondColor = conf.getBondColor(bond.getType());
+        final String appDef = APP_BOND + "_" + bond.getLabel();
+        final String matDef = MAT_BOND + "_" + bond.getLabel();
+        Serializable appearance;
         if (defs.containsKey(appDef)){
             appearance = x3dOf.createAppearance().withUSE(defs.get(appDef));
         } else {
-            String matDef = MAT_BOND + (bondType == null? "" : bondType);
             Material material = x3dOf.createMaterial()
                     .withDEF(matDef)
                     .withClazz(CssClass.BondMaterial.name(),
-                            CssClass.BondType.name() + bondType)
-                    .withDiffuseColor(conf.getBondColor())
-                    .withTransparency(transparency);
+                            CssClass.BondType.name() + bond.getType())
+                    .withDiffuseColor(bondColor);
             appearance = x3dOf.createAppearance()
                     .withDEF(appDef)
                     .withAppearanceChildContentModel(material);
@@ -414,13 +405,13 @@ public class X3DGenerator {
      * @param defs a table of DEFs already defined. If the DEF key is not
      *      already there, it will be added.
      * @param bondLength the length of the bond.
+     * @param bond the bond to render.
      * @param display the type of display for chemical structures.
-     * @param bondType the bond type (<code>null)</code> means render default).
      * @return a Transform including the bond Cylinder.
      */
     private Transform getBondCylinderTransform(String translation,
-            Map<String, Serializable> defs, double bondLength, Display display,
-            Integer bondType) {
+            Map<String, Serializable> defs, double bondLength, Bond bond,
+            Display display) {
         float scale = 1.0F;
         switch (display) {
             case WIREFRAME:
@@ -433,7 +424,7 @@ public class X3DGenerator {
                 .withTranslation(translation)
                 .withScale(scale + " " + scale + " " + scale)
                 .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        getBondCylinder(defs, bondLength, display, bondType));
+                        getBondCylinder(defs, bondLength, bond, display));
     }
 
     /**
