@@ -33,11 +33,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.web3d.x3d.Appearance;
 import org.web3d.x3d.Billboard;
 import org.web3d.x3d.Group;
+import org.web3d.x3d.Material;
 import org.web3d.x3d.ObjectFactory;
 import org.web3d.x3d.PositionInterpolator;
 import org.web3d.x3d.ROUTE;
+import org.web3d.x3d.ScalarInterpolator;
 import org.web3d.x3d.Shape;
 import org.web3d.x3d.TimeSensor;
 import org.web3d.x3d.Transform;
@@ -50,10 +53,14 @@ import org.web3d.x3d.X3D;
 public class X3DGenerator {
 
     private static final String AAM = "AAM";
+    private static final String APP_BOND = "APP_BOND";
+    private static final String MAT_BOND = "MAT_BOND";
+    
     private static final String FRACTION_CHANGED = "fraction_changed";
     private static final String SET_FRACTION = "set_fraction";
     private static final String VALUE_CHANGED = "value_changed";
     private static final String TRANSLATION = "translation";
+    private static final String TRANSPARENCY = "transparency";
 
     private static final Logger logger =
             Logger.getLogger(X3DGenerator.class.getName());
@@ -113,11 +120,14 @@ public class X3DGenerator {
     /**
      * Builds a Transform around a bond.
      * @param bond the bond to render.
+     * @param defs a table of DEFs already defined. If the DEF key is not
+     *      already there, it will be added.
      * @param display the type of display for chemical structures.
      * @param aab the object containing the atoms linked by this bond.
      * @return a Transform representing a bond.
      */
-    Transform getBondTransform(Bond bond, Display display, AtomsAndBonds aab) {
+    Transform getBondTransform(Bond bond, Map<String, Serializable> defs,
+            Display display, AtomsAndBonds aab) {
         // one end of the bond:
         Point fromP = aab.getAtoms().get(bond.getFromAtom()).getCoordinates();
         // the other end of the bond:
@@ -131,7 +141,7 @@ public class X3DGenerator {
         double bondLength = bondVector.getMagnitude();
         // Default rendering of Cylinder in X3D is vertical:
         Vector vertVector = new Vector(0, 1, 0);
-        final Serializable x3dBond = getGroup(bond, bondLength, display);
+        final Serializable x3dBond = getGroup(bond, defs, bondLength, display);
         Transform tr = x3dOf.createTransform()
             .withDEF(bond.getLabel())
             .withTranslation(middle.toString())
@@ -158,12 +168,18 @@ public class X3DGenerator {
         Map<String, Serializable> defs = new HashMap<>();
         int atomNum = 0;
         for (Map.Entry<Integer, Atom> entry : aab.getAtoms().entrySet()) {
-            Transform tr = getAtomTransform(entry.getValue(), defs, display,
-                    ++atomNum);
+            final Atom atom = entry.getValue();
+            Transform tr = getAtomTransform(atom, defs, display, ++atomNum);
+            String def = AAM + (atom.getAam() > 0 ? atom.getAam() : atomNum);
+            tr.setDEF(def);
+            defs.put(def, tr);
             ser.add(tr);
         }
         for (Map.Entry<String, Bond> entry : aab.getBonds().entrySet()) {
-            Transform tr = getBondTransform(entry.getValue(), display, aab);
+            final Bond bond = entry.getValue();
+            Transform tr = getBondTransform(bond, defs, display, aab);
+            tr.setDEF(bond.getLabel());
+            defs.put(bond.getLabel(), tr);
             ser.add(tr);
         }
         ser.add(x3dOf.createViewpoint()
@@ -185,41 +201,45 @@ public class X3DGenerator {
     /**
      * Builds a Group with the Cylinders forming the bond.
      * @param bond the bond.
+     * @param defs a table of DEFs already defined. If the DEF key is not
+     *      already there, it will be added.
      * @param bondLength the length of the bond.
      * @param display the type of display for chemical structures.
      * @return a Group with cylinders.
      */
-    private Group getGroup(Bond bond, double bondLength, Display display) {
+    private Group getGroup(Bond bond, Map<String, Serializable> defs,
+            double bondLength, Display display) {
         Group group = x3dOf.createGroup();
         switch (bond.getType()) {
             case 1:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        getBondCylinderTransform("0 0 0", bondLength, display,
-                                null));
+                        getBondCylinderTransform("0 0 0", defs, bondLength,
+                                display, null));
                 break;
             case 2:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         getBondCylinderTransform("-" + conf.getBondDistance()
-                                + " 0 0", bondLength, display, null),
+                                + " 0 0", defs, bondLength, display, null),
                         getBondCylinderTransform(conf.getBondDistance()
-                                + " 0 0", bondLength, display, null));
+                                + " 0 0", defs, bondLength, display, null));
                 break;
             case 3:
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         getBondCylinderTransform("-" + conf.getBondDistance()
-                                + " 0 0", bondLength, display, null),
-                        getBondCylinderTransform("0 0 0", bondLength, display,
-                                null),
+                                + " 0 0", defs, bondLength, display, null),
+                        getBondCylinderTransform("0 0 0", defs, bondLength,
+                                display, null),
                         getBondCylinderTransform(conf.getBondDistance()
-                                + " 0 0", bondLength, display, null));
+                                + " 0 0", defs, bondLength, display, null));
                 break;
             case 4:
                 // aromatic
                 group.withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         getBondCylinderTransform("-" + conf.getBondDistance()
-                                + " 0 0", bondLength, display, null),
+                                + " 0 0", defs, bondLength, display, null),
                         getBondCylinderTransform(conf.getBondDistance()
-                                + " 0 0", bondLength, display, bond.getType()));
+                                + " 0 0", defs, bondLength, display,
+                                bond.getType()));
                 break;
         }
         return group;
@@ -277,16 +297,15 @@ public class X3DGenerator {
     /**
      * Builds a Transform around an atom group (ball + label).
      * @param atom the atom to render.
-     * @param defs a table of DEFs already defined, mapping atom symbols to
-     *      their X3D representation. If the <code>atom</code> symbol is not
+     * @param defs a table of DEFs already defined. If the DEF key is not
      *      already there, it will be added.
      * @param display the type of display for chemical structures.
      * @param atomNum the atom number. Only used if the atom does not contain
      *      information about its mapping.
      * @return a Transform representing an atom.
      */
-    private Transform getAtomTransform(Atom atom, Map<String,
-            Serializable> defs, Display display, int atomNum) {
+    private Transform getAtomTransform(Atom atom,
+            Map<String, Serializable> defs, Display display, int atomNum) {
         final Serializable x3dAtom;
         if (defs.containsKey(atom.getSymbol())) {
             x3dAtom = x3dOf.createGroup().withUSE(defs.get(atom.getSymbol()));
@@ -294,13 +313,10 @@ public class X3DGenerator {
             x3dAtom = getGroup(atom, display);
             defs.put(atom.getSymbol(), x3dAtom);
         }
-        String def = AAM + (atom.getAam() > 0 ? atom.getAam() : atomNum);
         Transform tr = x3dOf.createTransform()
-                .withDEF(def)
                 .withTranslation(atom.getCoordinates().toString())
                 .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
                         x3dAtom);
-        defs.put(def, tr);
         return tr;
     }
 
@@ -343,13 +359,16 @@ public class X3DGenerator {
 
     /**
      * Builds just one Cylinder to render a bond.
+     * @param defs a table of DEFs already defined. If the DEF key is not
+     *      already there, it will be added.
      * @param bondLength the length of the bond.
      * @param display the type of display for chemical structures.
      * @param bondType the bond type (<code>null)</code> means render default).
      * @return a Shape with a Cylinder for the bond.
      */
-    private Shape getBondCylinder(double bondLength, Display display,
-            Integer bondType) {
+    private Shape getBondCylinder(Map<String, Serializable> defs,
+            double bondLength, Display display, Integer bondType) {
+        Serializable appearance;
         float transparency = 0.5F;
         float radius = 0.05F;
         switch (display) {
@@ -361,28 +380,28 @@ public class X3DGenerator {
                 transparency = 1.0F;
                 break;
         }
-        if (bondType != null) {
+        if (bondType == 4) {
             transparency += (1 - transparency) / 1.5; // FIXME?
         }
-        Collection<Serializable> appNodes = new ArrayList<>();
-        appNodes.add(x3dOf.createMaterial()
-                .withClazz(CssClass.BondMaterial.name(),
-                        CssClass.BondType.name() + bondType)
-                .withDiffuseColor(conf.getBondColor())
-                .withTransparency(transparency));
-        /* Not supporte by x3dom yet:
-        if (hatch != null){
-        appNodes.add(x3dOf.createFillProperties()
-        .withClazz("fillProperties")
-        .withFilled(true)
-        .withHatched(true)
-        .withHatchColor("1 1 1") // FIXME
-        .withHatchStyle(BigInteger.valueOf(hatch)));
+        final String appDef = APP_BOND + (bondType == null? "" : bondType);
+        if (defs.containsKey(appDef)){
+            appearance = x3dOf.createAppearance().withUSE(defs.get(appDef));
+        } else {
+            String matDef = MAT_BOND + (bondType == null? "" : bondType);
+            Material material = x3dOf.createMaterial()
+                    .withDEF(matDef)
+                    .withClazz(CssClass.BondMaterial.name(),
+                            CssClass.BondType.name() + bondType)
+                    .withDiffuseColor(conf.getBondColor())
+                    .withTransparency(transparency);
+            appearance = x3dOf.createAppearance()
+                    .withDEF(appDef)
+                    .withAppearanceChildContentModel(material);
+            defs.put(matDef, material);
+            defs.put(appDef, appearance);
         }
-         */
         return x3dOf.createShape().withRest(
-                x3dOf.createAppearance()
-                        .withAppearanceChildContentModel(appNodes),
+                appearance,
                 x3dOf.createCylinder()
                         .withClazz(CssClass.BondCylinder.name())
                         .withRadius(radius)
@@ -392,13 +411,16 @@ public class X3DGenerator {
     /**
      * Builds the Transform for one Cylinder of a bond.
      * @param translation the position of the centre of the bond.
+     * @param defs a table of DEFs already defined. If the DEF key is not
+     *      already there, it will be added.
      * @param bondLength the length of the bond.
      * @param display the type of display for chemical structures.
      * @param bondType the bond type (<code>null)</code> means render default).
      * @return a Transform including the bond Cylinder.
      */
     private Transform getBondCylinderTransform(String translation,
-            double bondLength, Display display, Integer bondType) {
+            Map<String, Serializable> defs, double bondLength, Display display,
+            Integer bondType) {
         float scale = 1.0F;
         switch (display) {
             case WIREFRAME:
@@ -411,7 +433,7 @@ public class X3DGenerator {
                 .withTranslation(translation)
                 .withScale(scale + " " + scale + " " + scale)
                 .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(
-                        getBondCylinder(bondLength, display, bondType));
+                        getBondCylinder(defs, bondLength, display, bondType));
     }
 
     /**
@@ -423,6 +445,10 @@ public class X3DGenerator {
      * @return an X3D representation of the RXN file.
      */
     public List<Serializable> toX3D(AtomsAndBonds[] aab, Display display) {
+        // Calculate the animation fractions:
+        float start = (1 - conf.getRxnAnimationFraction()) / 2;
+        float end = start + conf.getRxnAnimationFraction();
+        final String key = "0 " + start + " " + end + " 1";
         // Render reactants:
         logger.log(Level.FINE, "getting X3D for reactants");
         NodesAndDefs nodesAndDefs = getNodesAndDefs(aab[0], display);
@@ -439,7 +465,7 @@ public class X3DGenerator {
                 "starting loop for atom translation, length: {0}",
                 aab[0].getAtoms().size());
         for (Integer aam : aab[0].getAtoms().keySet()){
-        logger.log(Level.FINE, "one atom: {0}", aam);
+            logger.log(Level.FINE, "one atom: {0}", aam);
             Atom rAtom = aab[0].getAtoms().get(aam);
             Atom pAtom = aab[1].getAtoms().get(aam);
             Vector v = new Vector(
@@ -448,14 +474,11 @@ public class X3DGenerator {
                     pAtom.getCoordinates().getZ()-rAtom.getCoordinates().getZ()
             );
             logger.log(Level.FINE, "distance p-r: {0}", v.getMagnitude());
-            if (v.getMagnitude() > 0.01){ // FIXME
-                // Calculate the animation fractions:
-                float start = (1 - conf.getRxnAnimationFraction()) / 2;
-                float end = start + conf.getRxnAnimationFraction();
+            if (v.getMagnitude() > 0.01){
                 PositionInterpolator pi = new PositionInterpolator()
                         .withDEF(CssClass.AtomPI.name() + aam)
                         .withClazz(CssClass.AtomPI.name())
-                        .withKey("0 " + start + " " + end + " 1")
+                        .withKey(key)
                         .withKeyValue(rAtom.getCoordinates().toString() + " "
                                 + rAtom.getCoordinates().toString() + " "
                                 + pAtom.getCoordinates().toString() + " "
@@ -475,7 +498,6 @@ public class X3DGenerator {
             }
         }
         logger.log(Level.FINE, "loop finished");
-        /*
         // - bonds:
         ScalarInterpolator fadeOutInterp = null, fadeInInterp = null;
         for (String bl : aab[0].getBonds().keySet()) {
@@ -483,32 +505,35 @@ public class X3DGenerator {
             Bond pBond = aab[1].getBonds().get(bl);
             if (pBond == null){
                 // - fade out for broken bonds
+                /*
                 if (fadeOutInterp == null){
                     fadeOutInterp = x3dOf.createScalarInterpolator()
-                            .withKeyValue("0 1, 0 1");
+                            .withKey(key)
+                            .withKeyValue("1 1 0 0");
                     ROUTE r1 = x3dOf.createROUTE()
                             .withFromNode(ts)
-                            .withFromField("fractin_changed") // FIXME
+                            .withFromField(FRACTION_CHANGED)
                             .withToNode(fadeOutInterp)
-                            .withToField("set_fracdtion"); // FIXME
+                            .withToField(SET_FRACTION);
                     nodesAndDefs.getNodes().add(fadeOutInterp);
                     nodesAndDefs.getNodes().add(r1);
                 }
                 ROUTE r2 = x3dOf.createROUTE()
                         .withFromNode(fadeOutInterp)
-                        .withFromField("value_changed") // FIXME
+                        .withFromField(VALUE_CHANGED)
                         .withToNode(XXX)
-                        .withToField("set_transparency"); // FIXME
+                        .withToField(TRANSPARENCY);
                 nodesAndDefs.getNodes().add(r2);
+                */
             } else if (rBond.getType() == pBond.getType()){
-                // - translation for unchanged bonds
+                // - translation and rotation for unchanged bonds
                 
             } else {
                 // - fade out/fade in for changed bonds
                 
             }
-            // - movement of the camera
         }
+        /*
         // - fade in for formed bonds
         for (String bl : aab[1].getBonds().keySet()) {
             if (aab[0].getBonds().get(bl) == null){
@@ -517,12 +542,42 @@ public class X3DGenerator {
             }
         }
         */
+        // - movement of the camera
         return nodesAndDefs.getNodes();
     }
 
     /**
      * Inner class to encapsulate both the X3D nodes to be added to a scene and
      * the DEFs among them.
+     * <br>
+     * The DEFs table contains these types of keys/values:
+     * <table>
+     *  <tr><th>key</th><th>value</th></tr>
+     *  <tr>
+     *      <td>Element symbol</td>
+     *      <td><code>Group</code> containing both atom sphere and label.</td>
+     *  </tr>
+     *  <tr>
+     *      <td>Atom number (atom-atom mapping), with the <code>AAM</code>
+     *          prefix (ex. <code>AAM3, AAM21</code>).</td>
+     *      <td><code>Transform</code> for one concrete atom.</td>
+     *  </tr>
+     *  <tr>
+     *      <td>Bond label indicating the two bound atoms (ex.
+     *          <code>2-6</code>).</td>
+     *      <td><code>Transform</code> for one concrete bond.</td>
+     *  </tr>
+     *  <tr>
+     *      <td><code>APP_BOND4 | APP_BOND</code></td>
+     *      <td><code>Appearance</code> for bonds (aromatic | any other type).
+     *          </td>
+     *  </tr>
+     *  <tr>
+     *      <td><code>MAT_BOND4 | MAT_BOND</code></td>
+     *      <td><code>Material</code> for bonds (aromatic | any other type).
+     *          </td>
+     *  </tr>
+     * </table>
      */
     private class NodesAndDefs {
         
