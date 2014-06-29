@@ -57,8 +57,7 @@ public class AtomsAndBonds {
     }
     
     public void addBond(Bond bond){
-        String label = bond.getFromAtom() + "-" + bond.getToAtom();
-        bonds.put(label, bond);
+        bonds.put(bond.getLabel(), bond);
     }
 
     public Map<Integer, Atom> getAtoms() {

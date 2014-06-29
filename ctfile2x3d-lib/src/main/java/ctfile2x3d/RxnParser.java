@@ -47,10 +47,14 @@ public class RxnParser implements CTFileParser {
     private final CTFile2X3DConfig conf;
     private final MolParser molParser;
 
+    public RxnParser(){
+        this(null);
+    }
+    
     public RxnParser(CTFile2X3DConfig conf) {
-        this.conf = conf;
-        this.molParser = new MolParser(conf);
-        this.x3dGen = new X3DGenerator(conf);
+        this.conf = conf == null? new CTFile2X3DConfig() : conf;
+        this.molParser = new MolParser(this.conf);
+        this.x3dGen = new X3DGenerator(this.conf);
         logger.setLevel(Level.FINE); // FIXME
     }
     

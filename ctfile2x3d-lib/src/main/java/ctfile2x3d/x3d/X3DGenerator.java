@@ -27,6 +27,7 @@ import ctfile2x3d.geom.Point;
 import ctfile2x3d.geom.Vector;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ import org.web3d.x3d.Billboard;
 import org.web3d.x3d.Group;
 import org.web3d.x3d.Material;
 import org.web3d.x3d.ObjectFactory;
+import org.web3d.x3d.OrientationInterpolator;
 import org.web3d.x3d.PositionInterpolator;
 import org.web3d.x3d.ROUTE;
 import org.web3d.x3d.ScalarInterpolator;
@@ -43,6 +45,8 @@ import org.web3d.x3d.Shape;
 import org.web3d.x3d.TimeSensor;
 import org.web3d.x3d.Transform;
 import org.web3d.x3d.X3D;
+import org.web3d.x3d.X3DInterpolatorNode;
+import org.web3d.x3d.X3DNode;
 
 /**
  * Generator of X3D objects from parsed items.
@@ -51,13 +55,17 @@ import org.web3d.x3d.X3D;
 public class X3DGenerator {
 
     private static final String AAM = "AAM";
-    private static final String APP_BOND = "APP_BOND";
-    private static final String MAT_BOND = "MAT_BOND";
+    private static final String APP_BOND = "APP_BOND_";
+    private static final String MAT_BOND = "MAT_BOND_";
+    private static final String INTERP = "INTERP_";
+    private static final String FADE_OUT = "FADE_OUT";
+    private static final String FADE_IN = "FADE_IN";
     
     private static final String FRACTION_CHANGED = "fraction_changed";
     private static final String SET_FRACTION = "set_fraction";
     private static final String VALUE_CHANGED = "value_changed";
     private static final String TRANSLATION = "translation";
+    private static final String ROTATION = "rotation";
     private static final String TRANSPARENCY = "transparency";
 
     private static final Logger logger =
@@ -124,7 +132,7 @@ public class X3DGenerator {
      * @param aab the object containing the atoms linked by this bond.
      * @return a Transform representing a bond.
      */
-    Transform getBondTransform(Bond bond, Map<String, Serializable> defs,
+    Transform getBondTransform(Bond bond, Map<String, X3DNode> defs,
             Display display, AtomsAndBonds aab) {
         // one end of the bond:
         Point fromP = aab.getAtoms().get(bond.getFromAtom()).getCoordinates();
@@ -141,7 +149,7 @@ public class X3DGenerator {
         Vector vertVector = new Vector(0, 1, 0);
         final Serializable x3dBond = getGroup(bond, defs, bondLength, display);
         Transform tr = x3dOf.createTransform()
-            .withDEF(bond.getLabel())
+            .withDEF(bond.getFullLabel())
             .withTranslation(middle.toString())
             .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(x3dBond);
         double rotAngle = Vector.getAngle(vertVector, bondVector);
@@ -163,7 +171,7 @@ public class X3DGenerator {
     private NodesAndDefs getNodesAndDefs(AtomsAndBonds aab, Display display) {
         List<Serializable> ser = new ArrayList<>();
         // Table of existing DEFs:
-        Map<String, Serializable> defs = new HashMap<>();
+        Map<String, X3DNode> defs = new HashMap<>();
         int atomNum = 0;
         for (Map.Entry<Integer, Atom> entry : aab.getAtoms().entrySet()) {
             final Atom atom = entry.getValue();
@@ -176,8 +184,9 @@ public class X3DGenerator {
         for (Map.Entry<String, Bond> entry : aab.getBonds().entrySet()) {
             final Bond bond = entry.getValue();
             Transform tr = getBondTransform(bond, defs, display, aab);
-            tr.setDEF(bond.getLabel());
-            defs.put(bond.getLabel(), tr);
+            final String bondDef = bond.getFullLabel();
+            tr.setDEF(bondDef);
+            defs.put(bondDef, tr);
             ser.add(tr);
         }
         ser.add(x3dOf.createViewpoint()
@@ -205,7 +214,7 @@ public class X3DGenerator {
      * @param display the type of display for chemical structures.
      * @return a Group with cylinders.
      */
-    private Group getGroup(Bond bond, Map<String, Serializable> defs,
+    private Group getGroup(Bond bond, Map<String, X3DNode> defs,
             double bondLength, Display display) {
         Group group = x3dOf.createGroup();
         switch (bond.getType()) {
@@ -302,8 +311,8 @@ public class X3DGenerator {
      * @return a Transform representing an atom.
      */
     private Transform getAtomTransform(Atom atom,
-            Map<String, Serializable> defs, Display display, int atomNum) {
-        final Serializable x3dAtom;
+            Map<String, X3DNode> defs, Display display, int atomNum) {
+        final X3DNode x3dAtom;
         if (defs.containsKey(atom.getSymbol())) {
             x3dAtom = x3dOf.createGroup().withUSE(defs.get(atom.getSymbol()));
         } else {
@@ -363,7 +372,7 @@ public class X3DGenerator {
      * @param display the type of display for chemical structures.
      * @return a Shape with a Cylinder for the bond.
      */
-    private Shape getBondCylinder(Map<String, Serializable> defs,
+    private Shape getBondCylinder(Map<String, X3DNode> defs,
             double bondLength, Bond bond, Display display) {
         float radius;
         switch (display) {
@@ -374,9 +383,9 @@ public class X3DGenerator {
                 radius = 0.05F;
         }
         String bondColor = conf.getBondColor(bond.getType());
-        final String appDef = APP_BOND + "_" + bond.getLabel();
-        final String matDef = MAT_BOND + "_" + bond.getLabel();
-        Serializable appearance;
+        final String appDef = APP_BOND + bond.getFullLabel();
+        final String matDef = MAT_BOND + bond.getFullLabel();
+        X3DNode appearance;
         if (defs.containsKey(appDef)){
             appearance = x3dOf.createAppearance().withUSE(defs.get(appDef));
         } else {
@@ -410,7 +419,7 @@ public class X3DGenerator {
      * @return a Transform including the bond Cylinder.
      */
     private Transform getBondCylinderTransform(String translation,
-            Map<String, Serializable> defs, double bondLength, Bond bond,
+            Map<String, X3DNode> defs, double bondLength, Bond bond,
             Display display) {
         float scale = 1.0F;
         switch (display) {
@@ -442,14 +451,15 @@ public class X3DGenerator {
         final String key = "0 " + start + " " + end + " 1";
         // Render reactants:
         logger.log(Level.FINE, "getting X3D for reactants");
-        NodesAndDefs nodesAndDefs = getNodesAndDefs(aab[0], display);
+        NodesAndDefs rNad = getNodesAndDefs(aab[0], display);
+        NodesAndDefs pNad = getNodesAndDefs(aab[1], display);
         logger.log(Level.FINE, "getting TS");
         final TimeSensor ts = x3dOf.createTimeSensor()
                 .withDEF(CssClass.TimeSensor.name())
                 .withClazz(CssClass.TimeSensor.name())
                 .withEnabled(true).withLoop(true).withCycleInterval("5"); // FIXME
         logger.log(Level.FINE, "adding TS");
-        nodesAndDefs.getNodes().add(ts);
+        rNad.nodes.add(ts);
         // Process the products and compute the proper animation:
         // - translation for atoms:
         logger.log(Level.FINE,
@@ -466,75 +476,180 @@ public class X3DGenerator {
             );
             logger.log(Level.FINE, "distance p-r: {0}", v.getMagnitude());
             if (v.getMagnitude() > 0.01){
-                PositionInterpolator pi = new PositionInterpolator()
-                        .withDEF(CssClass.AtomPI.name() + aam)
-                        .withClazz(CssClass.AtomPI.name())
-                        .withKey(key)
-                        .withKeyValue(rAtom.getCoordinates().toString() + " "
-                                + rAtom.getCoordinates().toString() + " "
-                                + pAtom.getCoordinates().toString() + " "
-                                + pAtom.getCoordinates().toString());
-                ROUTE r1 = x3dOf.createROUTE()
-                        .withFromNode(ts).withFromField(FRACTION_CHANGED)
-                        .withToNode(pi).withToField(SET_FRACTION);
-                ROUTE r2 = x3dOf.createROUTE()
-                        .withFromNode(pi).withFromField(VALUE_CHANGED)
-                        .withToNode(nodesAndDefs.getDefs()
-                                .get(X3DGenerator.AAM + aam.toString()))
-                        .withToField(TRANSLATION);
-                logger.log(Level.FINE, "adding routes");
-                nodesAndDefs.getNodes().add(pi);
-                nodesAndDefs.getNodes().add(r1);
-                nodesAndDefs.getNodes().add(r2);
+                final X3DNode target = rNad.defs.get(AAM + aam.toString());
+                rNad.nodes.addAll(getAnimation(ts, key,
+                        target, TRANSLATION,
+                        rAtom.getCoordinates().toString(),
+                        pAtom.getCoordinates().toString(),
+                        rNad.defs,
+                        INTERP + TRANSLATION + "_" + target.getDEF()
+                ));
             }
         }
         logger.log(Level.FINE, "loop finished");
         // - bonds:
-        ScalarInterpolator fadeOutInterp = null, fadeInInterp = null;
         for (String bl : aab[0].getBonds().keySet()) {
             Bond rBond = aab[0].getBonds().get(bl);
             Bond pBond = aab[1].getBonds().get(bl);
+            final String bondMatDef = MAT_BOND + rBond.getFullLabel();
             if (pBond == null){
+                final X3DNode target = rNad.defs.get(bondMatDef);
                 // - fade out for broken bonds
-                /*
-                if (fadeOutInterp == null){
-                    fadeOutInterp = x3dOf.createScalarInterpolator()
-                            .withKey(key)
-                            .withKeyValue("1 1 0 0");
-                    ROUTE r1 = x3dOf.createROUTE()
-                            .withFromNode(ts)
-                            .withFromField(FRACTION_CHANGED)
-                            .withToNode(fadeOutInterp)
-                            .withToField(SET_FRACTION);
-                    nodesAndDefs.getNodes().add(fadeOutInterp);
-                    nodesAndDefs.getNodes().add(r1);
-                }
-                ROUTE r2 = x3dOf.createROUTE()
-                        .withFromNode(fadeOutInterp)
-                        .withFromField(VALUE_CHANGED)
-                        .withToNode(XXX)
-                        .withToField(TRANSPARENCY);
-                nodesAndDefs.getNodes().add(r2);
-                */
-            } else if (rBond.getType() == pBond.getType()){
-                // - translation and rotation for unchanged bonds
-                
+                rNad.nodes.addAll(getAnimation(ts, key, target,
+                        TRANSPARENCY, "0", "1", rNad.defs,
+                        INTERP + FADE_OUT));
             } else {
-                // - fade out/fade in for changed bonds
-                
+                // Kept bonds (same atoms):
+                final Transform rTransform = (Transform)
+                        rNad.defs.get(rBond.getFullLabel());
+                final Transform pTransform = (Transform)
+                        pNad.defs.get(pBond.getFullLabel());
+                // - translation
+                String fromTr = rTransform.getTranslation();
+                String toTr = pTransform.getTranslation();
+                // - rotation
+                String fromRo = rTransform.getRotation();
+                String toRo = pTransform.getRotation();
+                moveAndRotate(rNad, ts, key, rTransform,
+                        fromTr, toTr, fromRo, toRo);
+                // - fade out/fade in for bonds changing type:
+                if (rBond.getType() != pBond.getType()){
+                    // Fade out reactant bond:
+                    rNad.nodes.addAll(getAnimation(ts, key,
+                            rNad.defs.get(bondMatDef),
+                            TRANSPARENCY, "0", "1", rNad.defs,
+                            INTERP + FADE_OUT));
+                    // Create a fading-in product bond:
+                    Transform fib = addFadeInBond(aab, rBond.getLabel(),
+                            rNad, display, ts, key);
+                    // Animate product bond:
+                    moveAndRotate(rNad, ts, key, fib,
+                            fromTr, toTr, fromRo, toRo);
+                }
             }
         }
-        /*
         // - fade in for formed bonds
         for (String bl : aab[1].getBonds().keySet()) {
             if (aab[0].getBonds().get(bl) == null){
-                nodesAndDefs.getNodes().add(molParser.getBondTransform(
-                        aab[1].getBonds().get(bl), aab[1], XXX));
+                addFadeInBond(aab, bl, rNad, display, ts, key);
             }
         }
-        */
         // - movement of the camera
-        return nodesAndDefs.getNodes();
+        // TODO
+        return rNad.nodes;
+    }
+
+    /**
+     * Translates and rotates an X3D node.
+     * @param rNad object to add the animations to.
+     * @param ts Timesensor controlling the animations.
+     * @param key the key applied to the interpolators.
+     * @param target the X3D node to be translated and rotated.
+     * @param fromTr initial position.
+     * @param toTr final position.
+     * @param fromRo initial rotation.
+     * @param toRo final rotation.
+     */
+    private void moveAndRotate(NodesAndDefs rNad, final TimeSensor ts,
+            final String key, final X3DNode target, String fromTr, String toTr,
+            String fromRo, String toRo) {
+        rNad.nodes.addAll(getAnimation(ts, key, target,
+                TRANSLATION, fromTr, toTr, rNad.defs,
+                INTERP + TRANSLATION + "_" + target.getDEF()));
+        rNad.nodes.addAll(getAnimation(ts, key, target,
+                ROTATION, fromRo, toRo, rNad.defs,
+                INTERP + ROTATION + "_" + target.getDEF()));
+    }
+
+    /**
+     * Creates X3D nodes for a new bond which fades in.
+     * @param aab the object containing the bond and the bound atoms.
+     * @param bl the label for the bond.
+     * @param rNad the object to add the new bond and its animation.
+     * @param display the type of display for the bond.
+     * @param ts the Timesensor controlling the animation.
+     * @param key the key applied to the interpolator.
+     * @return the created bond as a Transform node.
+     */
+    private Transform addFadeInBond(AtomsAndBonds[] aab, String bl,
+            NodesAndDefs rNad, Display display, final TimeSensor ts,
+            final String key) {
+        Bond pBond = aab[1].getBonds().get(bl);
+        Transform tr =
+                getBondTransform(pBond, rNad.defs, display, aab[1]);
+        final String trDef = pBond.getFullLabel();
+        tr.setDEF(trDef);
+        rNad.nodes.add(tr);
+        rNad.defs.put(trDef, tr);
+        // , then the animation:
+        rNad.nodes.addAll(getAnimation(ts, key,
+                rNad.defs.get(MAT_BOND + trDef),
+                TRANSPARENCY, "1.0", "0.0", rNad.defs,
+                INTERP + FADE_IN));
+        return tr;
+    }
+    
+    /**
+     * Builds one Interpolator and two ROUTEs to animate an object.
+     * @param ts the TimeSensor triggering the animation.
+     * @param key the four fractions of time defining the animation.
+     * @param target the object being animated.
+     * @param field the field which changes during the animation.
+     * @param fromValue the initial value of the <code>field</code> at the
+     *      beginning of the animation.
+     * @param toValue the final value of the <code>field</code> at the end of
+     *      the animation.
+     * @param defs map of DEFs already created, to reuse any existing
+     *      Interpolator.
+     * @param interpDef DEF for the interpolator to use.
+     * @return 
+     */
+    private Collection<Serializable> getAnimation(TimeSensor ts, String key,
+            X3DNode target, String field, String fromValue, String toValue,
+            Map<String, X3DNode> defs, String interpDef){
+        Collection<Serializable> anim = new ArrayList<>();
+        X3DInterpolatorNode interp = null;
+        if (defs.containsKey(interpDef)){
+            // do not create interpolator nor route 1
+            // crete only route 2
+            interp = (X3DInterpolatorNode) defs.get(interpDef);
+        } else {
+            switch (field) {
+                case TRANSLATION:
+                    interp = x3dOf.createPositionInterpolator()
+                            .withKeyValue(fromValue + " " + fromValue + " "
+                                    + toValue + " " + toValue);
+                    break;
+                case ROTATION:
+                    interp = x3dOf.createOrientationInterpolator()
+                            .withKeyValue(fromValue + " " + fromValue + " "
+                                    + toValue + " " + toValue);
+                    break;
+                case TRANSPARENCY:
+                    interp = x3dOf.createScalarInterpolator()
+                            .withKeyValue(fromValue + " " + fromValue + " "
+                                    + toValue + " " + toValue);
+                    break;
+            }
+            interp.setDEF(interpDef);
+            interp.setKey(key);
+            // Add the interpolator to defs for reuse:
+            defs.put(interpDef, interp);
+            ROUTE r1 = x3dOf.createROUTE()
+                    .withFromNode(ts)
+                    .withFromField(FRACTION_CHANGED)
+                    .withToNode(interp)
+                    .withToField(SET_FRACTION);
+            anim.add(interp);
+            anim.add(r1);
+        }
+        ROUTE r2 = x3dOf.createROUTE()
+                .withFromNode(interp)
+                .withFromField(VALUE_CHANGED)
+                .withToNode(target)
+                .withToField(field);
+        anim.add(r2);
+        return anim;
     }
 
     /**
@@ -573,9 +688,9 @@ public class X3DGenerator {
     private class NodesAndDefs {
         
         private final List<Serializable> nodes;
-        private final Map<String, Serializable> defs;
+        private final Map<String, X3DNode> defs;
 
-        NodesAndDefs(List<Serializable> nodes, Map<String, Serializable> defs) {
+        NodesAndDefs(List<Serializable> nodes, Map<String, X3DNode> defs) {
             this.nodes = nodes;
             this.defs = defs;
         }
@@ -584,7 +699,7 @@ public class X3DGenerator {
             return nodes;
         }
 
-        Map<String, Serializable> getDefs() {
+        Map<String, X3DNode> getDefs() {
             return defs;
         }
 

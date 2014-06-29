@@ -54,6 +54,10 @@ public class Bond {
     public String getLabel(){
         return fromAtom + "-" + toAtom;
     }
+    
+    public String getFullLabel(){
+        return getLabel() + "_" + type;
+    }
 
     @Override
     public int hashCode() {
