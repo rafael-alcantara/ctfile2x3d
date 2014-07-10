@@ -42,19 +42,20 @@
             <button type="submit">View as X3D</button>
         </form>
         <div id="x3d">
+            <%--
             <jsp:include page="ctfile2x3d" flush="true">
                 <jsp:param name="id" value="${param.id}"/>
                 <jsp:param name="format" value="${param.format}"/>
+                <jsp:param name="display" value="${param.display}"/>
             </jsp:include>
-            <%--
+            --%>
             <X3D profile="Full">
                 <Scene>
                     <Transform>
-                        <Inline url="ctfile2x3d?id=${param.id}&amp;format=${param.format}"/>
+                        <Inline url="ctfile2x3d?id=${param.id}&amp;format=${param.format}&amp;display=${param.display}"/>
                     </Transform>
                 </Scene>
             </X3D>
-            --%>
         </div>
         <a href="${ctfileURL}">${empty ctfileURL? '' : 'Download CTFile'}</a>
         <select onchange="setDisplay(this.value)">
