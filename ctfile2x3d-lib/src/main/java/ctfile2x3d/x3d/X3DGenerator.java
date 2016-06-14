@@ -37,10 +37,7 @@ import org.web3d.x3d.Billboard;
 import org.web3d.x3d.Group;
 import org.web3d.x3d.Material;
 import org.web3d.x3d.ObjectFactory;
-import org.web3d.x3d.OrientationInterpolator;
-import org.web3d.x3d.PositionInterpolator;
 import org.web3d.x3d.ROUTE;
-import org.web3d.x3d.ScalarInterpolator;
 import org.web3d.x3d.Shape;
 import org.web3d.x3d.TimeSensor;
 import org.web3d.x3d.Transform;
@@ -122,6 +119,25 @@ public class X3DGenerator {
             );
         return bb;
     }
+    
+    /**
+     * Calculates the <code>rotation</code> field (X3D <code>Transform</code>
+     * node) for two given points.
+     * @param p1
+     * @param p2
+     * @return a String suitable as a <code>rotation</code> field.
+     */
+    protected String getRotation(Point p1, Point p2){
+        Vector vector = new Vector(
+                p2.getX() - p1.getX(),
+                p2.getY() - p1.getY(),
+                p2.getZ() - p1.getZ());
+        // Default rendering in X3D is vertical:
+        Vector vertVector = new Vector(0, 1, 0);
+        double rotAngle = Vector.getAngle(vertVector, vector);
+        Vector rotVector = Vector.getNormal(vertVector, vector);
+        return rotVector.toString() + " " + rotAngle;
+    }
 
     /**
      * Builds a Transform around a bond.
@@ -145,19 +161,12 @@ public class X3DGenerator {
                 toP.getY() - fromP.getY(),
                 toP.getZ() - fromP.getZ());
         double bondLength = bondVector.getMagnitude();
-        // Default rendering of Cylinder in X3D is vertical:
-        Vector vertVector = new Vector(0, 1, 0);
         final Serializable x3dBond = getGroup(bond, defs, bondLength, display);
         Transform tr = x3dOf.createTransform()
             .withDEF(bond.getFullLabel())
             .withTranslation(middle.toString())
             .withBackgroundOrColorInterpolatorOrCoordinateInterpolator(x3dBond);
-        double rotAngle = Vector.getAngle(vertVector, bondVector);
-        if (rotAngle > 0.01) {
-            // FIXME
-            Vector rotVector = Vector.getNormal(vertVector, bondVector);
-            tr.setRotation(rotVector.toString() + " " + rotAngle);
-        }
+        tr.setRotation(getRotation(fromP, toP));
         return tr;
     }
 
@@ -493,11 +502,22 @@ public class X3DGenerator {
             Bond pBond = aab[1].getBonds().get(bl);
             final String bondMatDef = MAT_BOND + rBond.getFullLabel();
             if (pBond == null){
-                final X3DNode target = rNad.defs.get(bondMatDef);
+                final X3DNode theBondMat = rNad.defs.get(bondMatDef);
                 // - fade out for broken bonds
-                rNad.nodes.addAll(getAnimation(ts, key, target,
+                rNad.nodes.addAll(getAnimation(ts, key, theBondMat,
                         TRANSPARENCY, "0", "1", rNad.defs,
                         INTERP + FADE_OUT));
+                // get the final (products) position of the two atoms:
+                Point p1 = aab[1].getAtoms().get(rBond.getFromAtom())
+                        .getCoordinates();
+                Point p2 = aab[1].getAtoms().get(rBond.getToAtom())
+                        .getCoordinates();
+                // move and rotate those broken bonds
+                final X3DNode theBond = rNad.defs.get(rBond.getFullLabel());
+                Transform tr = (Transform) theBond;
+                moveAndRotate(rNad, ts, key, theBond,
+                        tr.getTranslation(), Point.getMiddle(p1, p2).toString(),
+                        tr.getRotation(), getRotation(p1, p2));
             } else {
                 // Kept bonds (same atoms):
                 final Transform rTransform = (Transform)
@@ -531,7 +551,17 @@ public class X3DGenerator {
         // - fade in for formed bonds
         for (String bl : aab[1].getBonds().keySet()) {
             if (aab[0].getBonds().get(bl) == null){
-                addFadeInBond(aab, bl, rNad, display, ts, key);
+                Transform fib = addFadeInBond(aab, bl, rNad, display, ts, key);
+                // move and rotate formed bonds
+                Bond pBond = aab[1].getBonds().get(bl);
+                Point p1 = aab[0].getAtoms().get(pBond.getFromAtom())
+                        .getCoordinates();
+                Point p2 = aab[0].getAtoms().get(pBond.getToAtom())
+                        .getCoordinates();
+                moveAndRotate(rNad, ts, key, fib,
+                        Point.getMiddle(p1, p2).toString(),
+                        fib.getTranslation(),
+                        getRotation(p1, p2), fib.getRotation());
             }
         }
         // - movement of the camera
@@ -602,7 +632,8 @@ public class X3DGenerator {
      * @param defs map of DEFs already created, to reuse any existing
      *      Interpolator.
      * @param interpDef DEF for the interpolator to use.
-     * @return 
+     * @return The Interpolator and two ROUTEs (or just the second ROUTE if the
+     *      Interpolator already exists among the <code>defs</code>).
      */
     private Collection<Serializable> getAnimation(TimeSensor ts, String key,
             X3DNode target, String field, String fromValue, String toValue,
